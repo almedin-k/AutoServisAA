@@ -1,0 +1,1026 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace AutoServis.Services.Database.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "AppointmentStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hoists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hoists", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Parts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Sku = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServicePhases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServicePhases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VehicleBrands",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VehicleBrands", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: true),
+                    ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    ProfileImageContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    DurationMinutes = table.Column<int>(type: "int", nullable: false),
+                    WarrantyMonths = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    HasImage = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_ServiceCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "ServiceCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TokenHash = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RevokedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vehicles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProductionYear = table.Column<int>(type: "int", nullable: false),
+                    EngineType = table.Column<int>(type: "int", nullable: false),
+                    EngineDisplacementCc = table.Column<int>(type: "int", nullable: false),
+                    EnginePowerKw = table.Column<int>(type: "int", nullable: false),
+                    Vin = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: false),
+                    MileageKm = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vehicles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_VehicleBrands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "VehicleBrands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceImages",
+                columns: table => new
+                {
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceImages", x => x.ServiceId);
+                    table.ForeignKey(
+                        name: "FK_ServiceImages_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceParts",
+                columns: table => new
+                {
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    PartId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceParts", x => new { x.ServiceId, x.PartId });
+                    table.ForeignKey(
+                        name: "FK_ServiceParts_Parts_PartId",
+                        column: x => x.PartId,
+                        principalTable: "Parts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ServiceParts_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceViews",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    ViewedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceViews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServiceViews_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceViews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    ScheduledStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduledEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MechanicId = table.Column<int>(type: "int", nullable: true),
+                    HoistId = table.Column<int>(type: "int", nullable: true),
+                    ServicePrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    ClientNote = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    InternalNotes = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    DiagnosticCodes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PaymentDeadline = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ApprovedByUserId = table.Column<int>(type: "int", nullable: true),
+                    ApprovedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CancelledByUserId = table.Column<int>(type: "int", nullable: true),
+                    CancelledAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CancellationReason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AppointmentStatuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "AppointmentStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Hoists_HoistId",
+                        column: x => x.HoistId,
+                        principalTable: "Hoists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Users_ApprovedByUserId",
+                        column: x => x.ApprovedByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Users_CancelledByUserId",
+                        column: x => x.CancelledByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Users_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Users_MechanicId",
+                        column: x => x.MechanicId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Vehicles_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentParts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    PartId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentParts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentParts_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AppointmentParts_Parts_PartId",
+                        column: x => x.PartId,
+                        principalTable: "Parts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentStatusHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    FromStatusId = table.Column<int>(type: "int", nullable: true),
+                    ToStatusId = table.Column<int>(type: "int", nullable: false),
+                    ChangedByUserId = table.Column<int>(type: "int", nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentStatusHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentStatusHistories_AppointmentStatuses_FromStatusId",
+                        column: x => x.FromStatusId,
+                        principalTable: "AppointmentStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AppointmentStatusHistories_AppointmentStatuses_ToStatusId",
+                        column: x => x.ToStatusId,
+                        principalTable: "AppointmentStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AppointmentStatusHistories_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AppointmentStatusHistories_Users_ChangedByUserId",
+                        column: x => x.ChangedByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    ChargedAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    ChargedCurrency = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    ExternalOrderId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ExternalCaptureId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    RefundedAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RefundedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.CheckConstraint("CK_Reviews_Rating", "[Rating] BETWEEN 1 AND 5");
+                    table.ForeignKey(
+                        name: "FK_Reviews_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceWorkflows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    PhaseId = table.Column<int>(type: "int", nullable: false),
+                    ChangedByUserId = table.Column<int>(type: "int", nullable: false),
+                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceWorkflows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServiceWorkflows_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ServiceWorkflows_ServicePhases_PhaseId",
+                        column: x => x.PhaseId,
+                        principalTable: "ServicePhases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ServiceWorkflows_Users_ChangedByUserId",
+                        column: x => x.ChangedByUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AppointmentStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pending" },
+                    { 2, "Approved" },
+                    { 3, "Confirmed" },
+                    { 4, "Completed" },
+                    { 5, "Cancelled" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "Name", "PostalCode" },
+                values: new object[,]
+                {
+                    { 1, "Mostar", "88000" },
+                    { 2, "Sarajevo", "71000" },
+                    { 3, "Banja Luka", "78000" },
+                    { 4, "Tuzla", "75000" },
+                    { 5, "Zenica", "72000" },
+                    { 6, "Bihać", "77000" },
+                    { 7, "Trebinje", "89101" },
+                    { 8, "Livno", "80101" },
+                    { 9, "Čapljina", "88300" },
+                    { 10, "Konjic", "88400" },
+                    { 11, "Stolac", "88360" },
+                    { 12, "Široki Brijeg", "88220" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hoists",
+                columns: new[] { "Id", "IsActive", "Name" },
+                values: new object[,]
+                {
+                    { 1, true, "Hoist 1" },
+                    { 2, true, "Hoist 2" },
+                    { 3, true, "Hoist 3" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Full access to the administrative application.", "Admin" },
+                    { 2, "Manages appointments, services and reports.", "Manager" },
+                    { 3, "Works on vehicles and updates the service workflow.", "Mechanic" },
+                    { 4, "Vehicle owner using the mobile application.", "Client" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ServiceCategories",
+                columns: new[] { "Id", "Description", "IsActive", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Oil, filters and periodic inspections.", true, "Regular Maintenance" },
+                    { 2, "Brake system service and replacement.", true, "Brakes" },
+                    { 3, "Scanning of electronic systems and sensors.", true, "Computer Diagnostics" },
+                    { 4, "Climate system service and refilling.", true, "Air Conditioning" },
+                    { 5, "Engine, gearbox and exhaust system work.", true, "Engine and Drivetrain" },
+                    { 6, "Engine control unit optimisation.", true, "ECU Tuning" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ServicePhases",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Received" },
+                    { 2, "DiagnosticsInProgress" },
+                    { 3, "WaitingForParts" },
+                    { 4, "InProgress" },
+                    { 5, "Finished" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "VehicleBrands",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Audi" },
+                    { 2, "BMW" },
+                    { 3, "Citroën" },
+                    { 4, "Dacia" },
+                    { 5, "Fiat" },
+                    { 6, "Ford" },
+                    { 7, "Honda" },
+                    { 8, "Hyundai" },
+                    { 9, "Kia" },
+                    { 10, "Mercedes-Benz" },
+                    { 11, "Opel" },
+                    { 12, "Peugeot" },
+                    { 13, "Renault" },
+                    { 14, "Seat" },
+                    { 15, "Škoda" },
+                    { 16, "Toyota" },
+                    { 17, "Volkswagen" },
+                    { 18, "Volvo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CityId", "CreatedAt", "Email", "FirstName", "IsActive", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImage", "ProfileImageContentType", "Username" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "desktop@autoservis.ba", "Almedin", true, null, "Kurtić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000001", null, null, "desktop" },
+                    { 2, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "manager@autoservis.ba", "Emir", true, null, "Begić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000002", null, null, "manager" },
+                    { 3, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "adnan.hadzic@autoservis.ba", "Adnan", true, null, "Hadžić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000003", null, null, "mechanic" },
+                    { 4, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mirza.delic@autoservis.ba", "Mirza", true, null, "Delić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000004", null, null, "mirza" },
+                    { 5, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mobile@autoservis.ba", "Amir", true, null, "Softić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000005", null, null, "mobile" },
+                    { 6, 9, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "meho.mehic@autoservis.ba", "Meho", true, null, "Mehić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000006", null, null, "meho" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 },
+                    { 3, 4 },
+                    { 4, 5 },
+                    { 4, 6 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentParts_AppointmentId",
+                table: "AppointmentParts",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentParts_PartId",
+                table: "AppointmentParts",
+                column: "PartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_ApprovedByUserId",
+                table: "Appointments",
+                column: "ApprovedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_CancelledByUserId",
+                table: "Appointments",
+                column: "CancelledByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_ClientId",
+                table: "Appointments",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_HoistId_ScheduledStart",
+                table: "Appointments",
+                columns: new[] { "HoistId", "ScheduledStart" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_MechanicId_ScheduledStart",
+                table: "Appointments",
+                columns: new[] { "MechanicId", "ScheduledStart" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_ServiceId",
+                table: "Appointments",
+                column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_StatusId_ScheduledStart",
+                table: "Appointments",
+                columns: new[] { "StatusId", "ScheduledStart" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_VehicleId",
+                table: "Appointments",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentStatusHistories_AppointmentId",
+                table: "AppointmentStatusHistories",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentStatusHistories_ChangedByUserId",
+                table: "AppointmentStatusHistories",
+                column: "ChangedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentStatusHistories_FromStatusId",
+                table: "AppointmentStatusHistories",
+                column: "FromStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentStatusHistories_ToStatusId",
+                table: "AppointmentStatusHistories",
+                column: "ToStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_Name",
+                table: "Cities",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_AppointmentId",
+                table: "Notifications",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_UserId_IsRead",
+                table: "Notifications",
+                columns: new[] { "UserId", "IsRead" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_AppointmentId",
+                table: "Payments",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_ExternalOrderId",
+                table: "Payments",
+                column: "ExternalOrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_TokenHash",
+                table: "RefreshTokens",
+                column: "TokenHash",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_AppointmentId",
+                table: "Reviews",
+                column: "AppointmentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ClientId",
+                table: "Reviews",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_Name",
+                table: "Roles",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceCategories_Name",
+                table: "ServiceCategories",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceParts_PartId",
+                table: "ServiceParts",
+                column: "PartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_CategoryId",
+                table: "Services",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceViews_ServiceId",
+                table: "ServiceViews",
+                column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceViews_UserId_ServiceId",
+                table: "ServiceViews",
+                columns: new[] { "UserId", "ServiceId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceWorkflows_AppointmentId",
+                table: "ServiceWorkflows",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceWorkflows_ChangedByUserId",
+                table: "ServiceWorkflows",
+                column: "ChangedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceWorkflows_PhaseId",
+                table: "ServiceWorkflows",
+                column: "PhaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CityId",
+                table: "Users",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VehicleBrands_Name",
+                table: "VehicleBrands",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_BrandId",
+                table: "Vehicles",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_UserId",
+                table: "Vehicles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_Vin",
+                table: "Vehicles",
+                column: "Vin",
+                unique: true,
+                filter: "[IsDeleted] = 0");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "AppointmentParts");
+
+            migrationBuilder.DropTable(
+                name: "AppointmentStatusHistories");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "ServiceImages");
+
+            migrationBuilder.DropTable(
+                name: "ServiceParts");
+
+            migrationBuilder.DropTable(
+                name: "ServiceViews");
+
+            migrationBuilder.DropTable(
+                name: "ServiceWorkflows");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "Parts");
+
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "ServicePhases");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "AppointmentStatuses");
+
+            migrationBuilder.DropTable(
+                name: "Hoists");
+
+            migrationBuilder.DropTable(
+                name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Vehicles");
+
+            migrationBuilder.DropTable(
+                name: "ServiceCategories");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "VehicleBrands");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
+        }
+    }
+}

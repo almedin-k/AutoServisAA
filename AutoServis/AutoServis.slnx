@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AutoServis.Common.Services/AutoServis.Common.Services.csproj" />
+  <Project Path="AutoServis.Model/AutoServis.Model.csproj" />
+  <Project Path="AutoServis.Services/AutoServis.Services.csproj" />
+  <Project Path="AutoServis.WebAPI/AutoServis.WebAPI.csproj" />
+</Solution>
