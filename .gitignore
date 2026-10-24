@@ -1,0 +1,33 @@
+# Secrets (the submission uses a password protected .env-tajne.zip instead)
+.env
+*.env
+!.env.example
+
+# .NET
+[Bb]in/
+[Oo]bj/
+[Ll]ogs/
+.vs/
+*.user
+*.suo
+*.log
+
+# IDEs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+
+# Flutter / Dart
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/build/
+**/.packages
+**/.pub-cache/
+**/.pub/
+
+# Build archives are published through GitHub Releases, not committed
+*.apk
+fit-build-*.zip

@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04
+    container_name: autoservis-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - autoservis-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: autoservis-api
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      DB_HOST: db
+      DB_PORT: "1433"
+    ports:
+      - "${API_PORT}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - autoservis-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  autoservis-network:
+    driver: bridge
