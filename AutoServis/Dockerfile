@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy project files first so that "dotnet restore" is cached when only source code changes.
 COPY AutoServis.Model/AutoServis.Model.csproj AutoServis.Model/
 COPY AutoServis.Common.Services/AutoServis.Common.Services.csproj AutoServis.Common.Services/
 COPY AutoServis.Services/AutoServis.Services.csproj AutoServis.Services/

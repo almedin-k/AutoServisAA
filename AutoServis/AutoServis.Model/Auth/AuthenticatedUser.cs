@@ -1,8 +1,5 @@
 namespace AutoServis.Model.Auth;
 
-/// <summary>
-/// Minimal identity data needed to build an access token. Never contains the password hash.
-/// </summary>
 public class AuthenticatedUser
 {
     public int Id { get; set; }

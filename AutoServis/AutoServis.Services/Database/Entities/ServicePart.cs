@@ -1,8 +1,6 @@
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// Parts that are usually needed for a service (shown to the client as "Required parts").
-/// </summary>
+// Parts that are usually needed for a service (shown to the client as "Required parts").
 public class ServicePart
 {
     public int ServiceId { get; set; }

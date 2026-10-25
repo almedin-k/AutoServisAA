@@ -1,9 +1,5 @@
 namespace AutoServis.WebAPI;
 
-/// <summary>
-/// Strongly typed application settings. Every value comes from environment variables
-/// (loaded from the .env file in development), so configuration lives in exactly one place.
-/// </summary>
 public sealed class AppSettings
 {
     private AppSettings(int apiPort, DatabaseSettings database, JwtSettings jwt, string[] corsAllowedOrigins)
@@ -14,7 +10,7 @@ public sealed class AppSettings
         CorsAllowedOrigins = corsAllowedOrigins;
     }
 
-    /// <summary>Port used when the API runs outside Docker. In Docker the container always listens on 8080.</summary>
+    // Port used when the API runs outside Docker. In Docker the container always listens on 8080.
     public int ApiPort { get; }
     public DatabaseSettings Database { get; }
     public JwtSettings Jwt { get; }

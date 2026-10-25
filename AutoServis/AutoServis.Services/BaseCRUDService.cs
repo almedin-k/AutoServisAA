@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoServis.Services;
 
-/// <summary>
-/// Generic CRUD service. Requests are validated with FluentValidation before anything is written.
-/// </summary>
+// Generic CRUD service. Requests are validated with FluentValidation before anything is written.
 public abstract class BaseCRUDService<TEntity, TResponse, TSearch, TInsertRequest, TUpdateRequest>
     : BaseReadService<TEntity, TResponse, TSearch>,
       IBaseCRUDService<TResponse, TSearch, TInsertRequest, TUpdateRequest>
@@ -33,26 +31,38 @@ public abstract class BaseCRUDService<TEntity, TResponse, TSearch, TInsertReques
         _updateValidator = updateValidator;
     }
 
-    /// <summary>Message shown when a record cannot be deleted because other records reference it.</summary>
+    //Message shown when a record cannot be deleted because other records reference it.
     protected virtual string InUseMessage =>
         $"This {EntityName.ToLowerInvariant()} is used by other records and cannot be deleted.";
 
-    /// <summary>Business checks that need the database (for example uniqueness).</summary>
+    //Business checks that need the database (for example uniqueness).
     protected virtual Task ValidateInsertAsync(TInsertRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
     protected virtual Task ValidateUpdateAsync(int id, TUpdateRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
-    /// <summary>Hook for setting server-controlled fields (for example CreatedAt) on a new entity.</summary>
+    //Hook for setting server-controlled fields (for example CreatedAt) on a new entity.
     protected virtual void OnInserting(TEntity entity)
     {
     }
 
-    /// <summary>Hook for setting server-controlled fields (for example UpdatedAt) on a modified entity.</summary>
+    //Hook for setting server-controlled fields (for example UpdatedAt) on a modified entity.
     protected virtual void OnUpdating(TEntity entity)
     {
     }
+
+    //Hook for work that needs the request and must be saved together with the new entity (for example child rows).
+    protected virtual Task BeforeInsertSaveAsync(TEntity entity, TInsertRequest request, CancellationToken cancellationToken)
+        => Task.CompletedTask;
+
+    //Hook for work that needs the request and must be saved together with the modified entity.
+    protected virtual Task BeforeUpdateSaveAsync(TEntity entity, TUpdateRequest request, CancellationToken cancellationToken)
+        => Task.CompletedTask;
+
+    //Builds the response returned after a successful insert or update.
+    protected virtual Task<TResponse> ToResponseAsync(TEntity entity, CancellationToken cancellationToken)
+        => Task.FromResult(Mapper.Map<TResponse>(entity));
 
     public virtual async Task<TResponse> InsertAsync(TInsertRequest request, CancellationToken cancellationToken = default)
     {
@@ -61,11 +71,12 @@ public abstract class BaseCRUDService<TEntity, TResponse, TSearch, TInsertReques
 
         var entity = Mapper.Map<TEntity>(request);
         OnInserting(entity);
+        await BeforeInsertSaveAsync(entity, request, cancellationToken);
 
         DbContext.Set<TEntity>().Add(entity);
         await DbContext.SaveChangesAsync(cancellationToken);
 
-        return Mapper.Map<TResponse>(entity);
+        return await ToResponseAsync(entity, cancellationToken);
     }
 
     public virtual async Task<TResponse> UpdateAsync(int id, TUpdateRequest request, CancellationToken cancellationToken = default)
@@ -77,10 +88,11 @@ public abstract class BaseCRUDService<TEntity, TResponse, TSearch, TInsertReques
 
         Mapper.Map(request, entity);
         OnUpdating(entity);
+        await BeforeUpdateSaveAsync(entity, request, cancellationToken);
 
         await DbContext.SaveChangesAsync(cancellationToken);
 
-        return Mapper.Map<TResponse>(entity);
+        return await ToResponseAsync(entity, cancellationToken);
     }
 
     public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)

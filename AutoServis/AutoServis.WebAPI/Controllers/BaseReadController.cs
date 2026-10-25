@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoServis.WebAPI.Controllers;
 
-/// <summary>
-/// Read-only endpoints (list with filters and paging, get by id). Authentication is required.
-/// </summary>
 [ApiController]
 [Route("[controller]")]
 [Authorize]

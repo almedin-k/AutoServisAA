@@ -1,8 +1,6 @@
 namespace AutoServis.Model.Requests;
 
-/// <summary>
-/// Public registration. It intentionally has no role field: every self-registered user is a Client.
-/// </summary>
+// Public registration. It intentionally has no role field: every self-registered user is a Client.
 public class RegisterRequest
 {
     public string FirstName { get; set; } = string.Empty;

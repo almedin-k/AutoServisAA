@@ -1,0 +1,8 @@
+namespace AutoServis.Model.SearchObjects;
+
+public class ServiceCategorySearchObject : BaseSearchObject
+{
+    public string? Name { get; set; }
+
+    public bool? IsActive { get; set; }
+}

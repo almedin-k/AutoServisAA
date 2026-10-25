@@ -1,8 +1,6 @@
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// Recorded every time a user opens a service. It is a real input signal for the recommender.
-/// </summary>
+// Recorded every time a user opens a service. It is a real input signal for the recommender.
 public class ServiceView
 {
     public long Id { get; set; }

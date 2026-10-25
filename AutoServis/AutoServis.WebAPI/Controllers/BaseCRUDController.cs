@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoServis.WebAPI.Controllers;
 
-/// <summary>
-/// CRUD endpoints. Write operations are restricted to staff (Admin and Manager).
-/// </summary>
+// CRUD endpoints. Write operations are restricted to staff (Admin and Manager).
 public abstract class BaseCRUDController<TResponse, TSearch, TInsertRequest, TUpdateRequest, TService>
     : BaseReadController<TResponse, TSearch, TService>
     where TSearch : BaseSearchObject, new()

@@ -1,10 +1,7 @@
 using AutoServis.Model.Constants;
-
 namespace AutoServis.Model.SearchObjects;
 
-/// <summary>
-/// Common paging parameters for every list endpoint. The page size is always capped.
-/// </summary>
+// Common paging parameters for every list endpoint. The page size is always capped.
 public class BaseSearchObject
 {
     private int _page = 1;

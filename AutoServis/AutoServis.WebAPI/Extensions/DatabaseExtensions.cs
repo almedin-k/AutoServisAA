@@ -8,10 +8,7 @@ public static class DatabaseExtensions
     private const int MaxAttempts = 10;
     private static readonly TimeSpan RetryDelay = TimeSpan.FromSeconds(3);
 
-    /// <summary>
-    /// Applies pending migrations (and the seed data they contain). SQL Server in a container can need
-    /// a few seconds to accept connections, so the call is retried before giving up.
-    /// </summary>
+    // Applies pending migrations (and the seed data they contain). SQL Server in a container can needa few seconds to accept connections, so the call is retried before giving up.
     public static async Task MigrateDatabaseAsync(this WebApplication app)
     {
         var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("DatabaseMigration");

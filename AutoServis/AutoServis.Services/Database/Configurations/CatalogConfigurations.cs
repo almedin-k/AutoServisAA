@@ -62,10 +62,14 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.Property(s => s.Description).IsRequired().HasMaxLength(1000);
         builder.Property(s => s.Price).HasPrecision(18, 2);
 
+        builder.HasIndex(s => new { s.CategoryId, s.Name }).IsUnique();
+
         builder.HasOne(s => s.Category)
             .WithMany()
             .HasForeignKey(s => s.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasData(SeedData.Services);
     }
 }
 
@@ -92,6 +96,10 @@ public class PartConfiguration : IEntityTypeConfiguration<Part>
         builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
         builder.Property(p => p.Sku).HasMaxLength(50);
         builder.Property(p => p.UnitPrice).HasPrecision(18, 2);
+
+        builder.HasIndex(p => p.Sku).IsUnique().HasFilter("[Sku] IS NOT NULL");
+
+        builder.HasData(SeedData.Parts);
     }
 }
 
@@ -100,6 +108,8 @@ public class ServicePartConfiguration : IEntityTypeConfiguration<ServicePart>
     public void Configure(EntityTypeBuilder<ServicePart> builder)
     {
         builder.HasKey(sp => new { sp.ServiceId, sp.PartId });
+
+        builder.ToTable(t => t.HasCheckConstraint("CK_ServiceParts_Quantity", "[Quantity] > 0"));
 
         builder.HasOne(sp => sp.Service)
             .WithMany(s => s.ServiceParts)
@@ -110,6 +120,8 @@ public class ServicePartConfiguration : IEntityTypeConfiguration<ServicePart>
             .WithMany()
             .HasForeignKey(sp => sp.PartId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasData(SeedData.ServiceParts);
     }
 }
 

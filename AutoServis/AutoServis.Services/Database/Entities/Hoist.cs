@@ -1,8 +1,6 @@
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// A vehicle lift in the workshop. Together with mechanics it limits how many appointments can run at once.
-/// </summary>
+// A vehicle lift in the workshop. Together with mechanics it limits how many appointments can run at once.
 public class Hoist
 {
     public int Id { get; set; }

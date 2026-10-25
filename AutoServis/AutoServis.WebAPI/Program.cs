@@ -11,8 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
-// Load the .env file for local development. Real environment variables (for example the ones
-// set by docker compose) always take precedence.
+
 DotEnvLoader.Load();
 
 const string CorsPolicyName = "AllowedOrigins";
@@ -29,7 +28,6 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 var settings = AppSettings.FromConfiguration(builder.Configuration);
 
-// Outside Docker the port comes from .env. In Docker, ASPNETCORE_URLS is set by docker-compose.yml.
 if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
 {
     builder.WebHost.UseUrls($"http://localhost:{settings.ApiPort}");

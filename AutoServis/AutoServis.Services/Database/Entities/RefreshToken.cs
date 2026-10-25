@@ -1,9 +1,6 @@
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// Server-side session. The row id is the "sid" claim of the access token.
-/// Only the SHA-256 hash of the refresh token is stored.
-/// </summary>
+// Server-side session. The row id is the "sid" claim of the access token.  Only the SHA-256 hash of the refresh token is stored.
 public class RefreshToken
 {
     public int Id { get; set; }

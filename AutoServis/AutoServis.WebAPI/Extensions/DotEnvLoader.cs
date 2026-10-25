@@ -1,10 +1,6 @@
 namespace AutoServis.WebAPI.Extensions;
 
-/// <summary>
-/// Loads a .env file (searched from the working directory upwards) into environment variables.
-/// Variables that already exist, for example the ones set by docker compose, are never overwritten.
-/// Format: KEY=value per line, lines starting with # are comments.
-/// </summary>
+// Loads the .env file into environment variables.
 public static class DotEnvLoader
 {
     private const string FileName = ".env";

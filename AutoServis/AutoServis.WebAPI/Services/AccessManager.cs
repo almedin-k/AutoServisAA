@@ -9,9 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AutoServis.WebAPI.Services;
 
-/// <summary>
-/// Builds signed access tokens for authenticated sessions. Credentials and sessions are handled by <see cref="IAuthService"/>.
-/// </summary>
+// Builds signed access tokens for authenticated sessions. Credentials and sessions are handled by <see cref="IAuthService"/>.
 public class AccessManager : IAccessManager
 {
     private readonly IAuthService _authService;

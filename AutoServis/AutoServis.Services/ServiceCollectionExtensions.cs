@@ -1,25 +1,32 @@
 using AutoServis.Common.Services;
 using AutoServis.Services.Auth;
+using AutoServis.Services.Catalog;
 using AutoServis.Services.Cities;
+using AutoServis.Services.Mapping;
 using FluentValidation;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoServis.Services;
 
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Registers the service layer. Services that use the DbContext are Scoped.
-    /// </summary>
+    //Registers the service layer. Services that use the DbContext are Scoped.
     public static IServiceCollection AddServiceLayer(this IServiceCollection services)
     {
         services.AddMemoryCache();
+
+        // Registers every IRegister (custom Mapster mappings) found in this assembly.
+        TypeAdapterConfig.GlobalSettings.Scan(typeof(MappingConfig).Assembly);
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ISecureTokenGenerator, SecureTokenGenerator>();
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICityService, CityService>();
+        services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
+        services.AddScoped<IServiceService, ServiceService>();
+        services.AddScoped<IPartService, PartService>();
 
         AddValidators(services);
 

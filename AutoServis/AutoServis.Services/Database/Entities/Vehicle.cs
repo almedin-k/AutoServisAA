@@ -18,12 +18,10 @@ public class Vehicle
     public int EngineDisplacementCc { get; set; }
     public int EnginePowerKw { get; set; }
 
-    /// <summary>Vehicle identification number, exactly 17 characters.</summary>
     public string Vin { get; set; } = string.Empty;
 
     public int MileageKm { get; set; }
 
-    /// <summary>Logical delete so that service history stays linked to the vehicle.</summary>
     public bool IsDeleted { get; set; }
 
     public DateTime CreatedAt { get; set; }

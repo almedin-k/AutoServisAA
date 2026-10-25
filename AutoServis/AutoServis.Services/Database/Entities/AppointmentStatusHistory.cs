@@ -2,9 +2,7 @@ using AutoServis.Model.Enums;
 
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// Audit trail: who changed the appointment status, when and why.
-/// </summary>
+//Audit trail: who changed the appointment status, when and why.
 public class AppointmentStatusHistory
 {
     public int Id { get; set; }
@@ -15,7 +13,7 @@ public class AppointmentStatusHistory
     public AppointmentStatusType? FromStatusId { get; set; }
     public AppointmentStatusType ToStatusId { get; set; }
 
-    /// <summary>Null when the system changed the status (for example automatic cancellation).</summary>
+    // Null when the system changed the status (for example automatic cancellation).
     public int? ChangedByUserId { get; set; }
     public User? ChangedByUser { get; set; }
 

@@ -7,9 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoServis.Services;
 
-/// <summary>
-/// Generic read service. Filtering, sorting and paging are always executed in the database.
-/// </summary>
+// Generic read service. Filtering, sorting and paging are always executed in the database.
 public abstract class BaseReadService<TEntity, TResponse, TSearch> : IBaseReadService<TResponse, TSearch>
     where TEntity : class
     where TSearch : BaseSearchObject, new()
@@ -23,7 +21,7 @@ public abstract class BaseReadService<TEntity, TResponse, TSearch> : IBaseReadSe
     protected AutoServisDbContext DbContext { get; }
     protected IMapper Mapper { get; }
 
-    /// <summary>Human readable entity name used in error messages.</summary>
+    //Human readable entity name used in error messages.
     protected abstract string EntityName { get; }
 
     protected abstract IQueryable<TEntity> ApplyFilters(IQueryable<TEntity> query, TSearch search);

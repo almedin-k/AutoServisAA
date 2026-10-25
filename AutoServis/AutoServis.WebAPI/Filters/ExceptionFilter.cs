@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AutoServis.WebAPI.Filters;
 
-/// <summary>
-/// Maps exceptions to HTTP responses with a standard body: { message, errors, traceId }.
-/// Internal details and stack traces are only written to the server log, never sent to the client.
-/// </summary>
+// Maps exceptions to HTTP responses with a standard body: { message, errors, traceId }.
 public class ExceptionFilter : IExceptionFilter
 {
     private const string ClientErrorKey = "clientError";

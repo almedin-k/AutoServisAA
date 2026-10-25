@@ -2,9 +2,7 @@ using AutoServis.Model.Enums;
 
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// One entry of the internal workshop workflow. The latest entry is the current phase.
-/// </summary>
+// One entry of the internal workshop workflow. The latest entry is the current phase.
 public class ServiceWorkflow
 {
     public int Id { get; set; }

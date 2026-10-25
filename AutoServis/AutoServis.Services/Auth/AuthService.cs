@@ -93,7 +93,6 @@ public class AuthService : IAuthService
             throw new AuthenticationFailedException(SessionExpiredMessage);
         }
 
-        // Rotation: the old session is revoked and a new one is created in a single SaveChanges.
         existing.RevokedAt = now;
         var (newToken, rawToken) = CreateRefreshToken(existing.UserId, now);
         _dbContext.RefreshTokens.Add(newToken);

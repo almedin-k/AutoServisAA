@@ -2,7 +2,7 @@ using AutoServis.Model.Enums;
 
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>Lookup table. Ids are the values of <see cref="AppointmentStatusType"/>.</summary>
+//Lookup table
 public class AppointmentStatus
 {
     public AppointmentStatusType Id { get; set; }

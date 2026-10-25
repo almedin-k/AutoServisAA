@@ -1,8 +1,4 @@
 namespace AutoServis.Model.Enums;
-
-/// <summary>
-/// Internal workshop workflow phases of a vehicle that is physically in the service.
-/// </summary>
 public enum ServicePhaseType
 {
     Received = 1,

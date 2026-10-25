@@ -1,8 +1,6 @@
 namespace AutoServis.Services.Database.Entities;
 
-/// <summary>
-/// A part that was actually used during an appointment. The unit price is a snapshot.
-/// </summary>
+// A part that was actually used during an appointment. The unit price is a snapshot.
 public class AppointmentPart
 {
     public int Id { get; set; }

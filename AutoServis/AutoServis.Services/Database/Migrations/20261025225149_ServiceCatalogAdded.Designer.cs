@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoServis.Services.Database.Migrations
 {
     [DbContext(typeof(AutoServisDbContext))]
-    [Migration("20261024223909_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261025225149_ServiceCatalogAdded")]
+    partial class ServiceCatalogAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -442,7 +442,125 @@ namespace AutoServis.Services.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Sku")
+                        .IsUnique()
+                        .HasFilter("[Sku] IS NOT NULL");
+
                     b.ToTable("Parts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "Engine oil 5W-30 (5 L)",
+                            Sku = "OIL-5W30-5L",
+                            UnitPrice = 55.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Oil filter",
+                            Sku = "FLT-OIL-STD",
+                            UnitPrice = 12.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsActive = true,
+                            Name = "Air filter",
+                            Sku = "FLT-AIR-STD",
+                            UnitPrice = 18.00m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsActive = true,
+                            Name = "Cabin (pollen) filter",
+                            Sku = "FLT-CAB-STD",
+                            UnitPrice = 15.00m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsActive = true,
+                            Name = "Fuel filter",
+                            Sku = "FLT-FUEL-STD",
+                            UnitPrice = 28.00m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsActive = true,
+                            Name = "Front brake pads (set)",
+                            Sku = "BRK-PAD-FR",
+                            UnitPrice = 65.00m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsActive = true,
+                            Name = "Rear brake pads (set)",
+                            Sku = "BRK-PAD-RR",
+                            UnitPrice = 55.00m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsActive = true,
+                            Name = "Front brake discs (pair)",
+                            Sku = "BRK-DSC-FR",
+                            UnitPrice = 140.00m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsActive = true,
+                            Name = "Brake fluid DOT 4 (1 L)",
+                            Sku = "BRK-FLD-1L",
+                            UnitPrice = 14.00m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsActive = true,
+                            Name = "A/C refrigerant R134a (500 g)",
+                            Sku = "AC-R134A-500",
+                            UnitPrice = 35.00m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsActive = true,
+                            Name = "Spark plug",
+                            Sku = "IGN-SPK-STD",
+                            UnitPrice = 12.00m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsActive = true,
+                            Name = "Timing belt kit",
+                            Sku = "TMG-KIT-STD",
+                            UnitPrice = 220.00m
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsActive = true,
+                            Name = "Coolant (5 L)",
+                            Sku = "CLT-5L",
+                            UnitPrice = 25.00m
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IsActive = true,
+                            Name = "Glow plug",
+                            Sku = "IGN-GLW-STD",
+                            UnitPrice = 22.00m
+                        });
                 });
 
             modelBuilder.Entity("AutoServis.Services.Database.Entities.Payment", b =>
@@ -673,9 +791,220 @@ namespace AutoServis.Services.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Services");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Engine oil and oil filter replacement with a basic visual inspection of the vehicle.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Small Service",
+                            Price = 140.00m,
+                            WarrantyMonths = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Oil, oil filter, air filter, cabin filter and fuel filter replacement with a full inspection of the vehicle.",
+                            DurationMinutes = 150,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Large Service",
+                            Price = 320.00m,
+                            WarrantyMonths = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Detailed inspection of a vehicle you plan to buy, with a written report of the findings.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Pre-purchase Inspection",
+                            Price = 60.00m,
+                            WarrantyMonths = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Replacement of the front brake pads and a check of the discs and brake lines.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Front Brake Pads Replacement",
+                            Price = 90.00m,
+                            WarrantyMonths = 12
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Replacement of the rear brake pads and a check of the discs and handbrake.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Rear Brake Pads Replacement",
+                            Price = 80.00m,
+                            WarrantyMonths = 12
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Replacement of the front brake discs together with new brake pads.",
+                            DurationMinutes = 120,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Front Brake Discs and Pads Replacement",
+                            Price = 210.00m,
+                            WarrantyMonths = 12
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Complete replacement of the brake fluid and bleeding of the brake system.",
+                            DurationMinutes = 45,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Brake Fluid Replacement",
+                            Price = 55.00m,
+                            WarrantyMonths = 6
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Scanning of all electronic control units, reading of fault codes and live sensor data, with a written report.",
+                            DurationMinutes = 45,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Complete Computer Diagnostics",
+                            Price = 50.00m,
+                            WarrantyMonths = 0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Quick reading and clearing of fault codes with an explanation of what each code means.",
+                            DurationMinutes = 20,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Fault Code Reading and Reset",
+                            Price = 25.00m,
+                            WarrantyMonths = 0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Leak check, refrigerant refill and cabin filter replacement for an efficient climate system.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Air Conditioning Service and Refill",
+                            Price = 90.00m,
+                            WarrantyMonths = 6
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Cleaning and disinfection of the climate system to remove bacteria and unpleasant odours.",
+                            DurationMinutes = 30,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Air Conditioning Disinfection",
+                            Price = 45.00m,
+                            WarrantyMonths = 0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Replacement of the timing belt kit and coolant, including a check of the related components.",
+                            DurationMinutes = 240,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Timing Belt Replacement",
+                            Price = 280.00m,
+                            WarrantyMonths = 12
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Draining and refilling of the cooling system with new coolant.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Coolant Replacement",
+                            Price = 70.00m,
+                            WarrantyMonths = 6
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Replacement of the spark plugs on petrol engines.",
+                            DurationMinutes = 45,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "Spark Plug Replacement",
+                            Price = 60.00m,
+                            WarrantyMonths = 6
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Optimisation of the engine control unit software for better response and efficiency, with a before and after test.",
+                            DurationMinutes = 180,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "ECU Remap Stage 1",
+                            Price = 450.00m,
+                            WarrantyMonths = 12
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Reading of the original ECU software and storing a backup, so the vehicle can always be returned to stock.",
+                            DurationMinutes = 60,
+                            HasImage = false,
+                            IsActive = true,
+                            Name = "ECU Reading and Backup",
+                            Price = 100.00m,
+                            WarrantyMonths = 0
+                        });
                 });
 
             modelBuilder.Entity("AutoServis.Services.Database.Entities.ServiceCategory", b =>
@@ -784,7 +1113,120 @@ namespace AutoServis.Services.Database.Migrations
 
                     b.HasIndex("PartId");
 
-                    b.ToTable("ServiceParts");
+                    b.ToTable("ServiceParts", t =>
+                        {
+                            t.HasCheckConstraint("CK_ServiceParts_Quantity", "[Quantity] > 0");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            ServiceId = 1,
+                            PartId = 1,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 1,
+                            PartId = 2,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            PartId = 1,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            PartId = 2,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            PartId = 3,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            PartId = 4,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            PartId = 5,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 4,
+                            PartId = 6,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 5,
+                            PartId = 7,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 6,
+                            PartId = 6,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 6,
+                            PartId = 8,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 7,
+                            PartId = 9,
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            ServiceId = 10,
+                            PartId = 4,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 10,
+                            PartId = 10,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 12,
+                            PartId = 12,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 12,
+                            PartId = 13,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 13,
+                            PartId = 13,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ServiceId = 14,
+                            PartId = 11,
+                            Quantity = 4
+                        });
                 });
 
             modelBuilder.Entity("AutoServis.Services.Database.Entities.ServicePhase", b =>

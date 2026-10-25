@@ -16,15 +16,11 @@ public class User
     public byte[]? ProfileImage { get; set; }
     public string? ProfileImageContentType { get; set; }
 
-    /// <summary>Soft delete flag. Inactive users cannot sign in but their history is preserved.</summary>
+    //Soft delete flag. Inactive users cannot sign in but their history is preserved.
     public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime? LastLoginAt { get; set; }
 
-    /// <summary>
-    /// Intentionally has no initializer: EF Core does not allow seed (HasData) entities with navigation collections set.
-    /// Always use Include(u => u.UserRoles) when reading, or assign a new list when creating a user.
-    /// </summary>
     public ICollection<UserRole> UserRoles { get; set; } = null!;
 }

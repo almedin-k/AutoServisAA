@@ -11,7 +11,7 @@ public static class SwaggerExtensions
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "AutoServis API",
+                Title = "AutoServisAA API",
                 Version = "v1",
                 Description = "REST API of the AutoServisAA system."
             });

@@ -5,7 +5,5 @@ namespace AutoServis.Model.Exceptions;
 /// </summary>
 public class AuthenticationFailedException : Exception
 {
-    public AuthenticationFailedException(string message) : base(message)
-    {
-    }
+    public AuthenticationFailedException(string message) : base(message) {}
 }
