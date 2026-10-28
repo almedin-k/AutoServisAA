@@ -52,13 +52,13 @@ public class AuthController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, user);
     }
 
-    /// <summary>Revokes the current session on the server, so the access token stops working immediately.</summary>
+    // Revokes the current session on the server, so the access token stops working immediately.
     [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
         var sessionId = _userAccessor.GetSessionId()
-            ?? throw new AuthenticationFailedException("Your session has expired. Please sign in again.");
+            ?? throw new AuthenticationFailedException("Vaša sesija je istekla. Prijavite se ponovo.");
 
         await _authService.LogoutAsync(sessionId, cancellationToken);
         return NoContent();

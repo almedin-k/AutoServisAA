@@ -21,7 +21,7 @@ public class PartService
     protected override string EntityName => "Part";
 
     protected override string InUseMessage =>
-        "This part is used by services or appointments and cannot be deleted. Deactivate it instead.";
+        "Ovaj dio se koristi u uslugama ili rezervacijama i ne može se obrisati. Umjesto brisanja ga deaktivirajte.";
 
     protected override IQueryable<Part> ApplyFilters(IQueryable<Part> query, PartSearchObject search)
     {
@@ -64,7 +64,7 @@ public class PartService
 
         if (exists)
         {
-            throw new BusinessException($"A part with SKU '{request.Sku}' already exists.");
+            throw new BusinessException($"Dio sa SKU oznakom '{request.Sku}' već postoji.");
         }
     }
 }

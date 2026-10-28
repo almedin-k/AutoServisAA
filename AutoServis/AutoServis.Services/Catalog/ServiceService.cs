@@ -34,8 +34,7 @@ public class ServiceService
     protected override string EntityName => "Service";
 
     protected override string InUseMessage =>
-        "This service is used by appointments and cannot be deleted. Deactivate it instead.";
-
+        "Ova usluga se koristi u rezervacijama i ne može se obrisati. Umjesto brisanja je deaktivirajte.";
 
     protected override IQueryable<Service> ApplyFilters(IQueryable<Service> query, ServiceSearchObject search)
     {
@@ -104,6 +103,7 @@ public class ServiceService
             .Include(s => s.ServiceParts).ThenInclude(sp => sp.Part)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
+        // Clients must not be able to discover inactive services, so they get the same 404 as for a missing id.
         if (service is null || (!_currentUser.IsStaff() && !(service.IsActive && service.Category.IsActive)))
         {
             throw new NotFoundException(EntityName, id);
@@ -114,6 +114,7 @@ public class ServiceService
         return response;
     }
 
+    // Stores a view when a client opens a service. These rows are a real input of the recommender.
     private async Task RecordViewAsync(int serviceId, CancellationToken cancellationToken)
     {
         if (!_currentUser.IsInRole(Roles.Client))
@@ -146,7 +147,6 @@ public class ServiceService
         await DbContext.SaveChangesAsync(cancellationToken);
     }
 
-
     protected override Task ValidateInsertAsync(ServiceUpsertRequest request, CancellationToken cancellationToken)
         => ValidateRulesAsync(null, request, cancellationToken);
 
@@ -161,12 +161,12 @@ public class ServiceService
 
         if (category is null)
         {
-            throw new BusinessException("The selected category does not exist.");
+            throw new BusinessException("Odabrana kategorija ne postoji.");
         }
 
         if (!category.IsActive && request.IsActive)
         {
-            throw new BusinessException("An active service cannot belong to an inactive category.");
+            throw new BusinessException("Aktivna usluga ne može pripadati neaktivnoj kategoriji.");
         }
 
         var duplicate = await DbContext.Services.AnyAsync(
@@ -177,7 +177,7 @@ public class ServiceService
 
         if (duplicate)
         {
-            throw new BusinessException($"A service named '{request.Name}' already exists in this category.");
+            throw new BusinessException($"Usluga s nazivom '{request.Name}' već postoji u ovoj kategoriji.");
         }
 
         var partIds = request.RequiredParts.Select(p => p.PartId).Distinct().ToList();
@@ -186,7 +186,7 @@ public class ServiceService
             var existingParts = await DbContext.Parts.CountAsync(p => partIds.Contains(p.Id), cancellationToken);
             if (existingParts != partIds.Count)
             {
-                throw new BusinessException("One or more selected parts do not exist.");
+                throw new BusinessException("Jedan ili više odabranih dijelova ne postoji.");
             }
         }
     }
@@ -246,7 +246,6 @@ public class ServiceService
     protected override Task<ServiceResponse> ToResponseAsync(Service entity, CancellationToken cancellationToken)
         => LoadDetailsAsync(entity.Id, cancellationToken);
 
-
     public async Task<ServiceImageResponse> GetImageAsync(int serviceId, CancellationToken cancellationToken = default)
     {
         var image = await DbContext.ServiceImages
@@ -255,24 +254,24 @@ public class ServiceService
             .Select(i => new ServiceImageResponse { Data = i.Data, ContentType = i.ContentType })
             .FirstOrDefaultAsync(cancellationToken);
 
-        return image ?? throw new NotFoundException("This service has no image.");
+        return image ?? throw new NotFoundException("Ova usluga nema sliku.");
     }
 
     public async Task SetImageAsync(int serviceId, byte[] data, CancellationToken cancellationToken = default)
     {
         if (data.Length == 0)
         {
-            throw new BusinessException("The image file is empty.");
+            throw new BusinessException("Datoteka sa slikom je prazna.");
         }
 
         if (data.Length > ServiceImageRules.MaxBytes)
         {
             throw new BusinessException(
-                $"The image is too large. The maximum size is {ServiceImageRules.MaxBytes / (1024 * 1024)} MB.");
+                $"Slika je prevelika. Maksimalna veličina je {ServiceImageRules.MaxBytes / (1024 * 1024)} MB.");
         }
 
         var contentType = ImageSignature.Detect(data)
-            ?? throw new BusinessException($"Only {ServiceImageRules.AllowedFormatsDescription} images are allowed.");
+            ?? throw new BusinessException($"Dozvoljene su samo slike u formatu {ServiceImageRules.AllowedFormatsDescription}.");
 
         var service = await DbContext.Services
             .Include(s => s.Image)

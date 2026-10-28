@@ -31,36 +31,36 @@ public abstract class BaseCRUDService<TEntity, TResponse, TSearch, TInsertReques
         _updateValidator = updateValidator;
     }
 
-    //Message shown when a record cannot be deleted because other records reference it.
+    // Message shown when a record cannot be deleted because other records reference it.
     protected virtual string InUseMessage =>
-        $"This {EntityName.ToLowerInvariant()} is used by other records and cannot be deleted.";
+        "Ovaj zapis se koristi u drugim zapisima i ne može se obrisati.";
 
-    //Business checks that need the database (for example uniqueness).
+    // Business checks that need the database (for example uniqueness).
     protected virtual Task ValidateInsertAsync(TInsertRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
     protected virtual Task ValidateUpdateAsync(int id, TUpdateRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
-    //Hook for setting server-controlled fields (for example CreatedAt) on a new entity.
+    // Hook for setting server-controlled fields (for example CreatedAt) on a new entity.
     protected virtual void OnInserting(TEntity entity)
     {
     }
 
-    //Hook for setting server-controlled fields (for example UpdatedAt) on a modified entity.
+    // Hook for setting server-controlled fields (for example UpdatedAt) on a modified entity.
     protected virtual void OnUpdating(TEntity entity)
     {
     }
 
-    //Hook for work that needs the request and must be saved together with the new entity (for example child rows).
+    // Hook for work that needs the request and must be saved together with the new entity (for example child rows).
     protected virtual Task BeforeInsertSaveAsync(TEntity entity, TInsertRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
-    //Hook for work that needs the request and must be saved together with the modified entity.
+    // Hook for work that needs the request and must be saved together with the modified entity.
     protected virtual Task BeforeUpdateSaveAsync(TEntity entity, TUpdateRequest request, CancellationToken cancellationToken)
         => Task.CompletedTask;
 
-    //Builds the response returned after a successful insert or update.
+    // Builds the response returned after a successful insert or update.
     protected virtual Task<TResponse> ToResponseAsync(TEntity entity, CancellationToken cancellationToken)
         => Task.FromResult(Mapper.Map<TResponse>(entity));
 

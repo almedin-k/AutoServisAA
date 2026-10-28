@@ -29,7 +29,7 @@ public class ServiceCategoryService
     protected override string EntityName => "Service category";
 
     protected override string InUseMessage =>
-        "This category contains services and cannot be deleted. Deactivate it instead.";
+        "Ova kategorija sadrži usluge i ne može se obrisati. Umjesto brisanja je deaktivirajte.";
 
     protected override IQueryable<ServiceCategory> ApplyFilters(IQueryable<ServiceCategory> query, ServiceCategorySearchObject search)
     {
@@ -72,7 +72,7 @@ public class ServiceCategoryService
     {
         if (await DbContext.ServiceCategories.AnyAsync(c => c.Name == request.Name, cancellationToken))
         {
-            throw new BusinessException($"A category named '{request.Name}' already exists.");
+            throw new BusinessException($"Kategorija s nazivom '{request.Name}' već postoji.");
         }
     }
 
@@ -80,7 +80,7 @@ public class ServiceCategoryService
     {
         if (await DbContext.ServiceCategories.AnyAsync(c => c.Name == request.Name && c.Id != id, cancellationToken))
         {
-            throw new BusinessException($"A category named '{request.Name}' already exists.");
+            throw new BusinessException($"Kategorija s nazivom '{request.Name}' već postoji.");
         }
     }
 }

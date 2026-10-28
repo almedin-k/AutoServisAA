@@ -11,13 +11,13 @@ AutoServis/            Backend solution, docker-compose.yml, .env.example
   AutoServis.Common.Services/  Password hashing and secure token helpers
   AutoServis.Services/         Entities, DbContext, migrations, seed data, services, validators
   AutoServis.WebAPI/           Controllers, filters, authentication, Program.cs
-UI/                    Flutter applications (added in later modules)
+UI/                    Flutter applications
+  autoservis_desktop/          Windows desktop application for workshop staff
 ```
 
 ## Running the backend
 
-1. Copy `AutoServis/.env.example` to `AutoServis/.env` (the values work as they are).
-2. Run everything with Docker (database + API):
+1. Run everything with Docker (database + API):
    ```
    cd AutoServis
    docker compose up --build
@@ -30,7 +30,20 @@ UI/                    Flutter applications (added in later modules)
    dotnet run --project AutoServis.WebAPI
    ```
 
-## Test accounts (password for every account: `test`)
+## Running the desktop application
+
+Requirements: Flutter SDK, Visual Studio with the "Desktop development with C++" workload. The API must be running.
+
+```
+cd UI/autoservis_desktop
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run -d windows --dart-define=API_BASE_URL=http://localhost:5126
+```
+
+The API address is not hardcoded: it comes from `--dart-define=API_BASE_URL`.
+
+## Test accounts (password for every account is `test`)
 
 | Context            | Username  | Password | Role     |
 |--------------------|-----------|----------|----------|

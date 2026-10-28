@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AutoServis.WebAPI.Filters;
 
-// Maps exceptions to HTTP responses with a standard body: { message, errors, traceId }.
+// Internal details and stack traces are only written to the server log, never sent to the client.
 public class ExceptionFilter : IExceptionFilter
 {
     private const string ClientErrorKey = "clientError";
@@ -51,7 +51,7 @@ public class ExceptionFilter : IExceptionFilter
 
             default:
                 statusCode = StatusCodes.Status500InternalServerError;
-                errors = Single(ServerErrorKey, "An unexpected error occurred. Please try again later.");
+                errors = Single(ServerErrorKey, "Došlo je do neočekivane greške. Pokušajte ponovo kasnije.");
                 break;
         }
 

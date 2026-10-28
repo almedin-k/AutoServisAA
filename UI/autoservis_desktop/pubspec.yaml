@@ -1,0 +1,27 @@
+name: autoservis_desktop
+description: "AutoServisAA desktop application for workshop staff."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.5+1
+  http: ^1.6.0
+  json_annotation: ^4.11.0
+  flutter_form_builder: ^10.3.0+2
+  file_picker: ^11.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  json_serializable: ^6.13.1
+  build_runner: ^2.13.1
+
+flutter:
+  uses-material-design: true

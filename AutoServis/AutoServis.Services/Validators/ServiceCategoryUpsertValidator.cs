@@ -8,10 +8,10 @@ public class ServiceCategoryUpsertValidator : AbstractValidator<ServiceCategoryU
     public ServiceCategoryUpsertValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Category name is required.")
-            .MaximumLength(100).WithMessage("Category name cannot be longer than 100 characters.");
+            .NotEmpty().WithMessage("Naziv kategorije je obavezan.")
+            .MaximumLength(100).WithMessage("Naziv kategorije ne može imati više od 100 znakova.");
 
         RuleFor(x => x.Description)
-            .MaximumLength(500).WithMessage("Description cannot be longer than 500 characters.");
+            .MaximumLength(500).WithMessage("Opis ne može imati više od 500 znakova.");
     }
 }

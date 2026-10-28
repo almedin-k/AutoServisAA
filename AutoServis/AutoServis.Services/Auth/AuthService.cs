@@ -16,8 +16,8 @@ namespace AutoServis.Services.Auth;
 
 public class AuthService : IAuthService
 {
-    private const string InvalidCredentialsMessage = "Invalid username or password.";
-    private const string SessionExpiredMessage = "Your session has expired. Please sign in again.";
+    private const string InvalidCredentialsMessage = "Pogrešno korisničko ime ili lozinka.";
+    private const string SessionExpiredMessage = "Vaša sesija je istekla. Prijavite se ponovo.";
     private static readonly TimeSpan SessionCacheDuration = TimeSpan.FromSeconds(30);
 
     private readonly AutoServisDbContext _dbContext;
@@ -93,6 +93,7 @@ public class AuthService : IAuthService
             throw new AuthenticationFailedException(SessionExpiredMessage);
         }
 
+        // Rotation: the old session is revoked and a new one is created in a single SaveChanges.
         existing.RevokedAt = now;
         var (newToken, rawToken) = CreateRefreshToken(existing.UserId, now);
         _dbContext.RefreshTokens.Add(newToken);
@@ -142,17 +143,17 @@ public class AuthService : IAuthService
 
         if (await _dbContext.Users.AnyAsync(u => u.Username == username, cancellationToken))
         {
-            throw new BusinessException("This username is already taken. Please choose another one.");
+            throw new BusinessException("Ovo korisničko ime je već zauzeto. Odaberite drugo.");
         }
 
         if (await _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken))
         {
-            throw new BusinessException("An account with this email address already exists.");
+            throw new BusinessException("Račun s ovom e-mail adresom već postoji.");
         }
 
         if (request.CityId.HasValue && !await _dbContext.Cities.AnyAsync(c => c.Id == request.CityId.Value, cancellationToken))
         {
-            throw new BusinessException("The selected city does not exist.");
+            throw new BusinessException("Odabrani grad ne postoji.");
         }
 
         var clientRole = await _dbContext.Roles.FirstAsync(r => r.Name == Roles.Client, cancellationToken);

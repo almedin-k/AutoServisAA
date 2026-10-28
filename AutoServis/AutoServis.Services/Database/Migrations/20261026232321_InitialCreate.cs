@@ -293,6 +293,7 @@ namespace AutoServis.Services.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceParts", x => new { x.ServiceId, x.PartId });
+                    table.CheckConstraint("CK_ServiceParts_Quantity", "[Quantity] > 0");
                     table.ForeignKey(
                         name: "FK_ServiceParts_Parts_PartId",
                         column: x => x.PartId,
@@ -646,9 +647,30 @@ namespace AutoServis.Services.Database.Migrations
                 columns: new[] { "Id", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, true, "Hoist 1" },
-                    { 2, true, "Hoist 2" },
-                    { 3, true, "Hoist 3" }
+                    { 1, true, "Dizalica 1" },
+                    { 2, true, "Dizalica 2" },
+                    { 3, true, "Dizalica 3" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Parts",
+                columns: new[] { "Id", "IsActive", "Name", "Sku", "UnitPrice" },
+                values: new object[,]
+                {
+                    { 1, true, "Motorno ulje 5W-30 (5 L)", "OIL-5W30-5L", 108.00m },
+                    { 2, true, "Filter ulja", "FLT-OIL-STD", 12.00m },
+                    { 3, true, "Filter zraka", "FLT-AIR-STD", 18.00m },
+                    { 4, true, "Polenski (kabinski) filter", "FLT-CAB-STD", 15.00m },
+                    { 5, true, "Filter goriva", "FLT-FUEL-STD", 28.00m },
+                    { 6, true, "Prednje kočione pločice (komplet)", "BRK-PAD-FR", 65.00m },
+                    { 7, true, "Zadnje kočione pločice (komplet)", "BRK-PAD-RR", 55.00m },
+                    { 8, true, "Prednji kočioni diskovi (par)", "BRK-DSC-FR", 140.00m },
+                    { 9, true, "Kočiona tečnost DOT 4 (1 L)", "BRK-FLD-1L", 14.00m },
+                    { 10, true, "Klima plin R134a (500 g)", "AC-R134A-500", 35.00m },
+                    { 11, true, "Svjećica", "IGN-SPK-STD", 12.00m },
+                    { 12, true, "Set zupčastog remena", "TMG-KIT-STD", 270.00m },
+                    { 13, true, "Rashladna tečnost (5 L)", "CLT-5L", 35.00m },
+                    { 14, true, "Grijač", "IGN-GLW-STD", 22.00m }
                 });
 
             migrationBuilder.InsertData(
@@ -667,12 +689,12 @@ namespace AutoServis.Services.Database.Migrations
                 columns: new[] { "Id", "Description", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Oil, filters and periodic inspections.", true, "Regular Maintenance" },
-                    { 2, "Brake system service and replacement.", true, "Brakes" },
-                    { 3, "Scanning of electronic systems and sensors.", true, "Computer Diagnostics" },
-                    { 4, "Climate system service and refilling.", true, "Air Conditioning" },
-                    { 5, "Engine, gearbox and exhaust system work.", true, "Engine and Drivetrain" },
-                    { 6, "Engine control unit optimisation.", true, "ECU Tuning" }
+                    { 1, "Ulje, filteri i periodični pregledi.", true, "Redovno održavanje" },
+                    { 2, "Servis i zamjena dijelova kočionog sistema.", true, "Kočioni sistem" },
+                    { 3, "Očitavanje elektronskih sistema i senzora.", true, "Kompjuterska dijagnostika" },
+                    { 4, "Servis i punjenje klima uređaja.", true, "Klima uređaj" },
+                    { 5, "Radovi na motoru, mjenjaču i izduvnom sistemu.", true, "Motor i pogonski mehanizam" },
+                    { 6, "Optimizacija softvera upravljačke jedinice motora.", true, "ECU tuning" }
                 });
 
             migrationBuilder.InsertData(
@@ -713,16 +735,64 @@ namespace AutoServis.Services.Database.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Services",
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "DurationMinutes", "HasImage", "IsActive", "Name", "Price", "UpdatedAt", "WarrantyMonths" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena motornog ulja i filtera ulja uz osnovnu vizuelnu kontrolu vozila.", 60, false, true, "Mali servis", 140.00m, null, 3 },
+                    { 2, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena ulja, filtera ulja, zraka, polena i goriva uz kompletan pregled vozila.", 150, false, true, "Veliki servis", 320.00m, null, 6 },
+                    { 3, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Detaljan pregled vozila koje planirate kupiti, uz pisani izvještaj o nalazima.", 60, false, true, "Pregled vozila prije kupovine", 60.00m, null, 0 },
+                    { 4, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena prednjih kočionih pločica uz kontrolu diskova i kočionih cijevi.", 60, false, true, "Zamjena prednjih kočionih pločica", 90.00m, null, 12 },
+                    { 5, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena zadnjih kočionih pločica uz kontrolu diskova i ručne kočnice.", 60, false, true, "Zamjena zadnjih kočionih pločica", 80.00m, null, 12 },
+                    { 6, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena prednjih kočionih diskova zajedno s novim pločicama.", 120, false, true, "Zamjena prednjih diskova i pločica", 210.00m, null, 12 },
+                    { 7, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Potpuna zamjena kočione tečnosti i odzračivanje kočionog sistema.", 45, false, true, "Zamjena kočione tečnosti", 55.00m, null, 6 },
+                    { 8, 3, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Očitavanje svih elektronskih upravljačkih jedinica, kodova grešaka i parametara senzora, uz pisani izvještaj.", 45, false, true, "Kompletna kompjuterska dijagnostika", 50.00m, null, 0 },
+                    { 9, 3, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Brzo očitavanje i brisanje kodova grešaka uz objašnjenje šta pojedini kod znači.", 20, false, true, "Očitavanje i brisanje kodova grešaka", 25.00m, null, 0 },
+                    { 10, 4, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Provjera curenja, punjenje klima plina i zamjena polenskog filtera za efikasan rad klima uređaja.", 60, false, true, "Servis i punjenje klime", 90.00m, null, 6 },
+                    { 11, 4, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Čišćenje i dezinfekcija klima sistema radi uklanjanja bakterija i neugodnih mirisa.", 30, false, true, "Dezinfekcija klima uređaja", 45.00m, null, 0 },
+                    { 12, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena seta zupčastog remena i rashladne tečnosti uz provjeru povezanih komponenti.", 240, false, true, "Zamjena zupčastog remena", 280.00m, null, 12 },
+                    { 13, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Ispuštanje i punjenje rashladnog sistema novom rashladnom tečnošću.", 60, false, true, "Zamjena rashladne tečnosti", 70.00m, null, 6 },
+                    { 14, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Zamjena svjećica na benzinskim motorima.", 45, false, true, "Zamjena svjećica", 60.00m, null, 6 },
+                    { 15, 6, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Optimizacija softvera upravljačke jedinice motora za bolji odziv i potrošnju, uz test prije i poslije.", 180, false, true, "ECU optimizacija (Stage 1)", 450.00m, null, 12 },
+                    { 16, 6, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Očitavanje originalnog softvera ECU-a i čuvanje kopije, kako bi se vozilo uvijek moglo vratiti na tvorničko stanje.", 60, false, true, "Očitavanje i sigurnosna kopija ECU-a", 100.00m, null, 0 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CityId", "CreatedAt", "Email", "FirstName", "IsActive", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImage", "ProfileImageContentType", "Username" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "desktop@autoservis.ba", "Almedin", true, null, "Kurtić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000001", null, null, "desktop" },
+                    { 1, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "desktop@autoservis.ba", "Almedin", true, null, "Kurtić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000001", null, null, "desktop" },
                     { 2, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "manager@autoservis.ba", "Emir", true, null, "Begić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000002", null, null, "manager" },
-                    { 3, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "adnan.hadzic@autoservis.ba", "Adnan", true, null, "Hadžić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000003", null, null, "mechanic" },
-                    { 4, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mirza.delic@autoservis.ba", "Mirza", true, null, "Delić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000004", null, null, "mirza" },
-                    { 5, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mobile@autoservis.ba", "Amir", true, null, "Softić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000005", null, null, "mobile" },
+                    { 3, 3, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "adnan.hadzic@autoservis.ba", "Adnan", true, null, "Hadžić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000003", null, null, "mechanic" },
+                    { 4, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mobile@autoservis.ba", "Mirza", true, null, "Delić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000004", null, null, "mobile" },
+                    { 5, 7, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "amir@autoservis.ba", "Amir", true, null, "Softić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000005", null, null, "amir" },
                     { 6, 9, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "meho.mehic@autoservis.ba", "Meho", true, null, "Mehić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000006", null, null, "meho" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ServiceParts",
+                columns: new[] { "PartId", "ServiceId", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 1, 1 },
+                    { 1, 2, 1 },
+                    { 2, 2, 1 },
+                    { 3, 2, 1 },
+                    { 4, 2, 1 },
+                    { 5, 2, 1 },
+                    { 6, 4, 1 },
+                    { 7, 5, 1 },
+                    { 6, 6, 1 },
+                    { 8, 6, 1 },
+                    { 9, 7, 2 },
+                    { 4, 10, 1 },
+                    { 10, 10, 1 },
+                    { 12, 12, 1 },
+                    { 13, 12, 1 },
+                    { 13, 13, 1 },
+                    { 11, 14, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -825,6 +895,13 @@ namespace AutoServis.Services.Database.Migrations
                 columns: new[] { "UserId", "IsRead" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Parts_Sku",
+                table: "Parts",
+                column: "Sku",
+                unique: true,
+                filter: "[Sku] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_AppointmentId",
                 table: "Payments",
                 column: "AppointmentId");
@@ -875,9 +952,10 @@ namespace AutoServis.Services.Database.Migrations
                 column: "PartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_CategoryId",
+                name: "IX_Services_CategoryId_Name",
                 table: "Services",
-                column: "CategoryId");
+                columns: new[] { "CategoryId", "Name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceViews_ServiceId",

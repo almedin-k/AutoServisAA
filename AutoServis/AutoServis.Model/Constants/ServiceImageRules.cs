@@ -1,8 +1,9 @@
 namespace AutoServis.Model.Constants;
 
+//Limits for service images uploaded through the API.
 public static class ServiceImageRules
 {
     public const int MaxBytes = 2 * 1024 * 1024;
 
-    public const string AllowedFormatsDescription = "JPEG, PNG or WebP";
+    public const string AllowedFormatsDescription = "JPEG, PNG ili WebP";
 }

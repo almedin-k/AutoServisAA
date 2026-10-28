@@ -32,13 +32,13 @@ public class ServicesController
     {
         if (file is null || file.Length == 0)
         {
-            throw new BusinessException("Please choose an image file.");
+            throw new BusinessException("Odaberite datoteku sa slikom.");
         }
 
         if (file.Length > ServiceImageRules.MaxBytes)
         {
             throw new BusinessException(
-                $"The image is too large. The maximum size is {ServiceImageRules.MaxBytes / (1024 * 1024)} MB.");
+                $"Slika je prevelika. Maksimalna veličina je {ServiceImageRules.MaxBytes / (1024 * 1024)} MB.");
         }
 
         using var stream = new MemoryStream((int)file.Length);

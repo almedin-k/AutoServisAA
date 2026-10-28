@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoServis.Services.Database.Migrations
 {
     [DbContext(typeof(AutoServisDbContext))]
-    [Migration("20261025225149_ServiceCatalogAdded")]
-    partial class ServiceCatalogAdded
+    [Migration("20261026232321_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -358,19 +358,19 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 1,
                             IsActive = true,
-                            Name = "Hoist 1"
+                            Name = "Dizalica 1"
                         },
                         new
                         {
                             Id = 2,
                             IsActive = true,
-                            Name = "Hoist 2"
+                            Name = "Dizalica 2"
                         },
                         new
                         {
                             Id = 3,
                             IsActive = true,
-                            Name = "Hoist 3"
+                            Name = "Dizalica 3"
                         });
                 });
 
@@ -453,15 +453,15 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 1,
                             IsActive = true,
-                            Name = "Engine oil 5W-30 (5 L)",
+                            Name = "Motorno ulje 5W-30 (5 L)",
                             Sku = "OIL-5W30-5L",
-                            UnitPrice = 55.00m
+                            UnitPrice = 108.00m
                         },
                         new
                         {
                             Id = 2,
                             IsActive = true,
-                            Name = "Oil filter",
+                            Name = "Filter ulja",
                             Sku = "FLT-OIL-STD",
                             UnitPrice = 12.00m
                         },
@@ -469,7 +469,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 3,
                             IsActive = true,
-                            Name = "Air filter",
+                            Name = "Filter zraka",
                             Sku = "FLT-AIR-STD",
                             UnitPrice = 18.00m
                         },
@@ -477,7 +477,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 4,
                             IsActive = true,
-                            Name = "Cabin (pollen) filter",
+                            Name = "Polenski (kabinski) filter",
                             Sku = "FLT-CAB-STD",
                             UnitPrice = 15.00m
                         },
@@ -485,7 +485,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 5,
                             IsActive = true,
-                            Name = "Fuel filter",
+                            Name = "Filter goriva",
                             Sku = "FLT-FUEL-STD",
                             UnitPrice = 28.00m
                         },
@@ -493,7 +493,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 6,
                             IsActive = true,
-                            Name = "Front brake pads (set)",
+                            Name = "Prednje kočione pločice (komplet)",
                             Sku = "BRK-PAD-FR",
                             UnitPrice = 65.00m
                         },
@@ -501,7 +501,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 7,
                             IsActive = true,
-                            Name = "Rear brake pads (set)",
+                            Name = "Zadnje kočione pločice (komplet)",
                             Sku = "BRK-PAD-RR",
                             UnitPrice = 55.00m
                         },
@@ -509,7 +509,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 8,
                             IsActive = true,
-                            Name = "Front brake discs (pair)",
+                            Name = "Prednji kočioni diskovi (par)",
                             Sku = "BRK-DSC-FR",
                             UnitPrice = 140.00m
                         },
@@ -517,7 +517,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 9,
                             IsActive = true,
-                            Name = "Brake fluid DOT 4 (1 L)",
+                            Name = "Kočiona tečnost DOT 4 (1 L)",
                             Sku = "BRK-FLD-1L",
                             UnitPrice = 14.00m
                         },
@@ -525,7 +525,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 10,
                             IsActive = true,
-                            Name = "A/C refrigerant R134a (500 g)",
+                            Name = "Klima plin R134a (500 g)",
                             Sku = "AC-R134A-500",
                             UnitPrice = 35.00m
                         },
@@ -533,7 +533,7 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 11,
                             IsActive = true,
-                            Name = "Spark plug",
+                            Name = "Svjećica",
                             Sku = "IGN-SPK-STD",
                             UnitPrice = 12.00m
                         },
@@ -541,23 +541,23 @@ namespace AutoServis.Services.Database.Migrations
                         {
                             Id = 12,
                             IsActive = true,
-                            Name = "Timing belt kit",
+                            Name = "Set zupčastog remena",
                             Sku = "TMG-KIT-STD",
-                            UnitPrice = 220.00m
+                            UnitPrice = 270.00m
                         },
                         new
                         {
                             Id = 13,
                             IsActive = true,
-                            Name = "Coolant (5 L)",
+                            Name = "Rashladna tečnost (5 L)",
                             Sku = "CLT-5L",
-                            UnitPrice = 25.00m
+                            UnitPrice = 35.00m
                         },
                         new
                         {
                             Id = 14,
                             IsActive = true,
-                            Name = "Glow plug",
+                            Name = "Grijač",
                             Sku = "IGN-GLW-STD",
                             UnitPrice = 22.00m
                         });
@@ -802,11 +802,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Engine oil and oil filter replacement with a basic visual inspection of the vehicle.",
+                            Description = "Zamjena motornog ulja i filtera ulja uz osnovnu vizuelnu kontrolu vozila.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Small Service",
+                            Name = "Mali servis",
                             Price = 140.00m,
                             WarrantyMonths = 3
                         },
@@ -815,11 +815,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 2,
                             CategoryId = 1,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Oil, oil filter, air filter, cabin filter and fuel filter replacement with a full inspection of the vehicle.",
+                            Description = "Zamjena ulja, filtera ulja, zraka, polena i goriva uz kompletan pregled vozila.",
                             DurationMinutes = 150,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Large Service",
+                            Name = "Veliki servis",
                             Price = 320.00m,
                             WarrantyMonths = 6
                         },
@@ -828,11 +828,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 3,
                             CategoryId = 1,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Detailed inspection of a vehicle you plan to buy, with a written report of the findings.",
+                            Description = "Detaljan pregled vozila koje planirate kupiti, uz pisani izvještaj o nalazima.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Pre-purchase Inspection",
+                            Name = "Pregled vozila prije kupovine",
                             Price = 60.00m,
                             WarrantyMonths = 0
                         },
@@ -841,11 +841,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 4,
                             CategoryId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Replacement of the front brake pads and a check of the discs and brake lines.",
+                            Description = "Zamjena prednjih kočionih pločica uz kontrolu diskova i kočionih cijevi.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Front Brake Pads Replacement",
+                            Name = "Zamjena prednjih kočionih pločica",
                             Price = 90.00m,
                             WarrantyMonths = 12
                         },
@@ -854,11 +854,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 5,
                             CategoryId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Replacement of the rear brake pads and a check of the discs and handbrake.",
+                            Description = "Zamjena zadnjih kočionih pločica uz kontrolu diskova i ručne kočnice.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Rear Brake Pads Replacement",
+                            Name = "Zamjena zadnjih kočionih pločica",
                             Price = 80.00m,
                             WarrantyMonths = 12
                         },
@@ -867,11 +867,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 6,
                             CategoryId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Replacement of the front brake discs together with new brake pads.",
+                            Description = "Zamjena prednjih kočionih diskova zajedno s novim pločicama.",
                             DurationMinutes = 120,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Front Brake Discs and Pads Replacement",
+                            Name = "Zamjena prednjih diskova i pločica",
                             Price = 210.00m,
                             WarrantyMonths = 12
                         },
@@ -880,11 +880,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 7,
                             CategoryId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Complete replacement of the brake fluid and bleeding of the brake system.",
+                            Description = "Potpuna zamjena kočione tečnosti i odzračivanje kočionog sistema.",
                             DurationMinutes = 45,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Brake Fluid Replacement",
+                            Name = "Zamjena kočione tečnosti",
                             Price = 55.00m,
                             WarrantyMonths = 6
                         },
@@ -893,11 +893,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 8,
                             CategoryId = 3,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Scanning of all electronic control units, reading of fault codes and live sensor data, with a written report.",
+                            Description = "Očitavanje svih elektronskih upravljačkih jedinica, kodova grešaka i parametara senzora, uz pisani izvještaj.",
                             DurationMinutes = 45,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Complete Computer Diagnostics",
+                            Name = "Kompletna kompjuterska dijagnostika",
                             Price = 50.00m,
                             WarrantyMonths = 0
                         },
@@ -906,11 +906,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 9,
                             CategoryId = 3,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Quick reading and clearing of fault codes with an explanation of what each code means.",
+                            Description = "Brzo očitavanje i brisanje kodova grešaka uz objašnjenje šta pojedini kod znači.",
                             DurationMinutes = 20,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Fault Code Reading and Reset",
+                            Name = "Očitavanje i brisanje kodova grešaka",
                             Price = 25.00m,
                             WarrantyMonths = 0
                         },
@@ -919,11 +919,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 10,
                             CategoryId = 4,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Leak check, refrigerant refill and cabin filter replacement for an efficient climate system.",
+                            Description = "Provjera curenja, punjenje klima plina i zamjena polenskog filtera za efikasan rad klima uređaja.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Air Conditioning Service and Refill",
+                            Name = "Servis i punjenje klime",
                             Price = 90.00m,
                             WarrantyMonths = 6
                         },
@@ -932,11 +932,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 11,
                             CategoryId = 4,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Cleaning and disinfection of the climate system to remove bacteria and unpleasant odours.",
+                            Description = "Čišćenje i dezinfekcija klima sistema radi uklanjanja bakterija i neugodnih mirisa.",
                             DurationMinutes = 30,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Air Conditioning Disinfection",
+                            Name = "Dezinfekcija klima uređaja",
                             Price = 45.00m,
                             WarrantyMonths = 0
                         },
@@ -945,11 +945,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 12,
                             CategoryId = 5,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Replacement of the timing belt kit and coolant, including a check of the related components.",
+                            Description = "Zamjena seta zupčastog remena i rashladne tečnosti uz provjeru povezanih komponenti.",
                             DurationMinutes = 240,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Timing Belt Replacement",
+                            Name = "Zamjena zupčastog remena",
                             Price = 280.00m,
                             WarrantyMonths = 12
                         },
@@ -958,11 +958,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 13,
                             CategoryId = 5,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Draining and refilling of the cooling system with new coolant.",
+                            Description = "Ispuštanje i punjenje rashladnog sistema novom rashladnom tečnošću.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Coolant Replacement",
+                            Name = "Zamjena rashladne tečnosti",
                             Price = 70.00m,
                             WarrantyMonths = 6
                         },
@@ -971,11 +971,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 14,
                             CategoryId = 5,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Replacement of the spark plugs on petrol engines.",
+                            Description = "Zamjena svjećica na benzinskim motorima.",
                             DurationMinutes = 45,
                             HasImage = false,
                             IsActive = true,
-                            Name = "Spark Plug Replacement",
+                            Name = "Zamjena svjećica",
                             Price = 60.00m,
                             WarrantyMonths = 6
                         },
@@ -984,11 +984,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 15,
                             CategoryId = 6,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Optimisation of the engine control unit software for better response and efficiency, with a before and after test.",
+                            Description = "Optimizacija softvera upravljačke jedinice motora za bolji odziv i potrošnju, uz test prije i poslije.",
                             DurationMinutes = 180,
                             HasImage = false,
                             IsActive = true,
-                            Name = "ECU Remap Stage 1",
+                            Name = "ECU optimizacija (Stage 1)",
                             Price = 450.00m,
                             WarrantyMonths = 12
                         },
@@ -997,11 +997,11 @@ namespace AutoServis.Services.Database.Migrations
                             Id = 16,
                             CategoryId = 6,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Reading of the original ECU software and storing a backup, so the vehicle can always be returned to stock.",
+                            Description = "Očitavanje originalnog softvera ECU-a i čuvanje kopije, kako bi se vozilo uvijek moglo vratiti na tvorničko stanje.",
                             DurationMinutes = 60,
                             HasImage = false,
                             IsActive = true,
-                            Name = "ECU Reading and Backup",
+                            Name = "Očitavanje i sigurnosna kopija ECU-a",
                             Price = 100.00m,
                             WarrantyMonths = 0
                         });
@@ -1038,44 +1038,44 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Oil, filters and periodic inspections.",
+                            Description = "Ulje, filteri i periodični pregledi.",
                             IsActive = true,
-                            Name = "Regular Maintenance"
+                            Name = "Redovno održavanje"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Brake system service and replacement.",
+                            Description = "Servis i zamjena dijelova kočionog sistema.",
                             IsActive = true,
-                            Name = "Brakes"
+                            Name = "Kočioni sistem"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Scanning of electronic systems and sensors.",
+                            Description = "Očitavanje elektronskih sistema i senzora.",
                             IsActive = true,
-                            Name = "Computer Diagnostics"
+                            Name = "Kompjuterska dijagnostika"
                         },
                         new
                         {
                             Id = 4,
-                            Description = "Climate system service and refilling.",
+                            Description = "Servis i punjenje klima uređaja.",
                             IsActive = true,
-                            Name = "Air Conditioning"
+                            Name = "Klima uređaj"
                         },
                         new
                         {
                             Id = 5,
-                            Description = "Engine, gearbox and exhaust system work.",
+                            Description = "Radovi na motoru, mjenjaču i izduvnom sistemu.",
                             IsActive = true,
-                            Name = "Engine and Drivetrain"
+                            Name = "Motor i pogonski mehanizam"
                         },
                         new
                         {
                             Id = 6,
-                            Description = "Engine control unit optimisation.",
+                            Description = "Optimizacija softvera upravljačke jedinice motora.",
                             IsActive = true,
-                            Name = "ECU Tuning"
+                            Name = "ECU tuning"
                         });
                 });
 
@@ -1404,7 +1404,7 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 1,
-                            CityId = 1,
+                            CityId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "desktop@autoservis.ba",
                             FirstName = "Almedin",
@@ -1430,7 +1430,7 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 3,
-                            CityId = 1,
+                            CityId = 3,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "adnan.hadzic@autoservis.ba",
                             FirstName = "Adnan",
@@ -1443,28 +1443,28 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 4,
-                            CityId = 1,
+                            CityId = 5,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "mirza.delic@autoservis.ba",
+                            Email = "mobile@autoservis.ba",
                             FirstName = "Mirza",
                             IsActive = true,
                             LastName = "Delić",
                             PasswordHash = "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2",
                             PhoneNumber = "+38761000004",
-                            Username = "mirza"
+                            Username = "mobile"
                         },
                         new
                         {
                             Id = 5,
-                            CityId = 1,
+                            CityId = 7,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "mobile@autoservis.ba",
+                            Email = "amir@autoservis.ba",
                             FirstName = "Amir",
                             IsActive = true,
                             LastName = "Softić",
                             PasswordHash = "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2",
                             PhoneNumber = "+38761000005",
-                            Username = "mobile"
+                            Username = "amir"
                         },
                         new
                         {

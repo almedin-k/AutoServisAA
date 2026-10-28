@@ -20,7 +20,7 @@ public class CityService
 
     protected override string EntityName => "City";
 
-    protected override string InUseMessage => "This city is assigned to users and cannot be deleted.";
+    protected override string InUseMessage => "Ovaj grad je dodijeljen korisnicima i ne može se obrisati.";
 
     protected override IQueryable<City> ApplyFilters(IQueryable<City> query, CitySearchObject search)
     {
@@ -39,7 +39,7 @@ public class CityService
     {
         if (await DbContext.Cities.AnyAsync(c => c.Name == request.Name, cancellationToken))
         {
-            throw new BusinessException($"A city named '{request.Name}' already exists.");
+            throw new BusinessException($"Grad '{request.Name}' već postoji.");
         }
     }
 
@@ -47,7 +47,7 @@ public class CityService
     {
         if (await DbContext.Cities.AnyAsync(c => c.Name == request.Name && c.Id != id, cancellationToken))
         {
-            throw new BusinessException($"A city named '{request.Name}' already exists.");
+            throw new BusinessException($"Grad '{request.Name}' već postoji.");
         }
     }
 }
