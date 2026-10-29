@@ -1,6 +1,6 @@
 # AutoServisAA
 
-Information system for an auto service: client mobile app (Flutter), administrative desktop app (Flutter Windows),
+Information system for an auto service: client mobile app (Flutter, Android), administrative desktop app (Flutter Windows),
 REST API (ASP.NET Core, .NET 9), SQL Server, RabbitMQ worker (added in a later module).
 
 ## Repository layout
@@ -13,11 +13,14 @@ AutoServis/            Backend solution, docker-compose.yml, .env.example
   AutoServis.WebAPI/           Controllers, filters, authentication, Program.cs
 UI/                    Flutter applications
   autoservis_desktop/          Windows desktop application for workshop staff
+  autoservis_mobile/           Android application for vehicle owners (clients)
 ```
+
 
 ## Running the backend
 
-1. Run everything with Docker (database + API):
+1. Copy `AutoServis/.env.example` to `AutoServis/.env` (the values work as they are).
+2. Run everything with Docker (database + API):
    ```
    cd AutoServis
    docker compose up --build
@@ -41,9 +44,25 @@ dart run build_runner build --delete-conflicting-outputs
 flutter run -d windows --dart-define=API_BASE_URL=http://localhost:5126
 ```
 
-The API address is not hardcoded: it comes from `--dart-define=API_BASE_URL`.
+## Running the mobile application
 
-## Test accounts (password for every account is `test`)
+Requirements: Flutter SDK, Android Studio with an Android emulator (or a phone with USB debugging). The API must be running.
+
+```
+cd UI/autoservis_mobile
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5126
+```
+
+`10.0.2.2` is the address under which the Android emulator reaches the computer it runs on.
+On a physical phone use the IP address of the computer in the local network, for example
+`--dart-define=API_BASE_URL=http://192.168.1.20:5126`. In that case run the API with Docker
+(`docker compose up --build`), because the API started with `dotnet run` listens on localhost only.
+
+The API address is never hardcoded in either application: it comes from `--dart-define=API_BASE_URL`.
+
+## Test accounts (password for every account: `test`)
 
 | Context            | Username  | Password | Role     |
 |--------------------|-----------|----------|----------|
@@ -51,3 +70,6 @@ The API address is not hardcoded: it comes from `--dart-define=API_BASE_URL`.
 | Mobile application | mobile    | test     | Client   |
 | Role: Manager      | manager   | test     | Manager  |
 | Role: Mechanic     | mechanic  | test     | Mechanic |
+
+The mobile application accepts only the Client role, the desktop application only the workshop team.
+A new client can also register in the mobile application.
