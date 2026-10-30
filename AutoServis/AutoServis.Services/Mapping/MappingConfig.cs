@@ -1,10 +1,10 @@
+using AutoServis.Model.Requests;
 using AutoServis.Model.Responses;
 using AutoServis.Services.Database.Entities;
 using Mapster;
 
 namespace AutoServis.Services.Mapping;
 
-// Mapster mappings that cannot be inferred from matching property names. Picked up by TypeAdapterConfig.GlobalSettings.Scan in AddServiceLayer.
 public class MappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
@@ -17,5 +17,14 @@ public class MappingConfig : IRegister
         config.NewConfig<ServicePart, ServicePartResponse>()
             .Map(dest => dest.PartName, src => src.Part.Name)
             .Map(dest => dest.UnitPrice, src => src.Part.UnitPrice);
+
+        config.NewConfig<VehicleUpsertRequest, Vehicle>()
+            .Ignore(
+                dest => dest.Id,
+                dest => dest.UserId,
+                dest => dest.User,
+                dest => dest.Brand,
+                dest => dest.IsDeleted,
+                dest => dest.CreatedAt);
     }
 }

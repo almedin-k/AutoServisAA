@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoServis.Services.Database.Migrations
 {
     [DbContext(typeof(AutoServisDbContext))]
-    [Migration("20261026232321_InitialCreate")]
+    [Migration("20261029201159_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -455,7 +455,7 @@ namespace AutoServis.Services.Database.Migrations
                             IsActive = true,
                             Name = "Motorno ulje 5W-30 (5 L)",
                             Sku = "OIL-5W30-5L",
-                            UnitPrice = 108.00m
+                            UnitPrice = 55.00m
                         },
                         new
                         {
@@ -543,7 +543,7 @@ namespace AutoServis.Services.Database.Migrations
                             IsActive = true,
                             Name = "Set zupčastog remena",
                             Sku = "TMG-KIT-STD",
-                            UnitPrice = 270.00m
+                            UnitPrice = 220.00m
                         },
                         new
                         {
@@ -551,13 +551,13 @@ namespace AutoServis.Services.Database.Migrations
                             IsActive = true,
                             Name = "Rashladna tečnost (5 L)",
                             Sku = "CLT-5L",
-                            UnitPrice = 35.00m
+                            UnitPrice = 25.00m
                         },
                         new
                         {
                             Id = 14,
                             IsActive = true,
-                            Name = "Grijač",
+                            Name = "Žarna svjećica",
                             Sku = "IGN-GLW-STD",
                             UnitPrice = 22.00m
                         });
@@ -1404,7 +1404,7 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 1,
-                            CityId = 2,
+                            CityId = 1,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "desktop@autoservis.ba",
                             FirstName = "Almedin",
@@ -1417,7 +1417,7 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 2,
-                            CityId = 1,
+                            CityId = 2,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "manager@autoservis.ba",
                             FirstName = "Emir",
@@ -1443,33 +1443,33 @@ namespace AutoServis.Services.Database.Migrations
                         new
                         {
                             Id = 4,
-                            CityId = 5,
+                            CityId = 4,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "mobile@autoservis.ba",
+                            Email = "mirza.delic@autoservis.ba",
                             FirstName = "Mirza",
                             IsActive = true,
                             LastName = "Delić",
                             PasswordHash = "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2",
                             PhoneNumber = "+38761000004",
-                            Username = "mobile"
+                            Username = "mirza"
                         },
                         new
                         {
                             Id = 5,
-                            CityId = 7,
+                            CityId = 5,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "amir@autoservis.ba",
+                            Email = "mobile@autoservis.ba",
                             FirstName = "Amir",
                             IsActive = true,
                             LastName = "Softić",
                             PasswordHash = "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2",
                             PhoneNumber = "+38761000005",
-                            Username = "amir"
+                            Username = "mobile"
                         },
                         new
                         {
                             Id = 6,
-                            CityId = 9,
+                            CityId = 6,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "meho.mehic@autoservis.ba",
                             FirstName = "Meho",
@@ -1584,6 +1584,83 @@ namespace AutoServis.Services.Database.Migrations
                         .HasFilter("[IsDeleted] = 0");
 
                     b.ToTable("Vehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BrandId = 17,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EngineDisplacementCc = 1968,
+                            EnginePowerKw = 110,
+                            EngineType = 2,
+                            IsDeleted = false,
+                            MileageKm = 187450,
+                            Model = "Golf 7",
+                            ProductionYear = 2016,
+                            UserId = 5,
+                            Vin = "WVWZZZAUZGW123456"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BrandId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EngineDisplacementCc = 1498,
+                            EnginePowerKw = 110,
+                            EngineType = 1,
+                            IsDeleted = false,
+                            MileageKm = 92300,
+                            Model = "A3 Sportback",
+                            ProductionYear = 2019,
+                            UserId = 5,
+                            Vin = "WAUZZZ8V5KA654321"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BrandId = 15,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EngineDisplacementCc = 1598,
+                            EnginePowerKw = 85,
+                            EngineType = 2,
+                            IsDeleted = false,
+                            MileageKm = 134800,
+                            Model = "Octavia",
+                            ProductionYear = 2018,
+                            UserId = 6,
+                            Vin = "TMBJJ7NE8J0987654"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BrandId = 2,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EngineDisplacementCc = 1995,
+                            EnginePowerKw = 135,
+                            EngineType = 2,
+                            IsDeleted = false,
+                            MileageKm = 201500,
+                            Model = "f30 320d",
+                            ProductionYear = 2015,
+                            UserId = 6,
+                            Vin = "WBA3D3C50FK123789"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BrandId = 16,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EngineDisplacementCc = 1490,
+                            EnginePowerKw = 85,
+                            EngineType = 3,
+                            IsDeleted = false,
+                            MileageKm = 48700,
+                            Model = "Yaris Hybrid",
+                            ProductionYear = 2021,
+                            UserId = 6,
+                            Vin = "VNKKTUD320A123456"
+                        });
                 });
 
             modelBuilder.Entity("AutoServis.Services.Database.Entities.VehicleBrand", b =>

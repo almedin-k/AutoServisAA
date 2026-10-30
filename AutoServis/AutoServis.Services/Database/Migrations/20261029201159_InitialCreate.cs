@@ -657,7 +657,7 @@ namespace AutoServis.Services.Database.Migrations
                 columns: new[] { "Id", "IsActive", "Name", "Sku", "UnitPrice" },
                 values: new object[,]
                 {
-                    { 1, true, "Motorno ulje 5W-30 (5 L)", "OIL-5W30-5L", 108.00m },
+                    { 1, true, "Motorno ulje 5W-30 (5 L)", "OIL-5W30-5L", 55.00m },
                     { 2, true, "Filter ulja", "FLT-OIL-STD", 12.00m },
                     { 3, true, "Filter zraka", "FLT-AIR-STD", 18.00m },
                     { 4, true, "Polenski (kabinski) filter", "FLT-CAB-STD", 15.00m },
@@ -668,9 +668,9 @@ namespace AutoServis.Services.Database.Migrations
                     { 9, true, "Kočiona tečnost DOT 4 (1 L)", "BRK-FLD-1L", 14.00m },
                     { 10, true, "Klima plin R134a (500 g)", "AC-R134A-500", 35.00m },
                     { 11, true, "Svjećica", "IGN-SPK-STD", 12.00m },
-                    { 12, true, "Set zupčastog remena", "TMG-KIT-STD", 270.00m },
-                    { 13, true, "Rashladna tečnost (5 L)", "CLT-5L", 35.00m },
-                    { 14, true, "Grijač", "IGN-GLW-STD", 22.00m }
+                    { 12, true, "Set zupčastog remena", "TMG-KIT-STD", 220.00m },
+                    { 13, true, "Rashladna tečnost (5 L)", "CLT-5L", 25.00m },
+                    { 14, true, "Žarna svjećica", "IGN-GLW-STD", 22.00m }
                 });
 
             migrationBuilder.InsertData(
@@ -762,12 +762,12 @@ namespace AutoServis.Services.Database.Migrations
                 columns: new[] { "Id", "CityId", "CreatedAt", "Email", "FirstName", "IsActive", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImage", "ProfileImageContentType", "Username" },
                 values: new object[,]
                 {
-                    { 1, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "desktop@autoservis.ba", "Almedin", true, null, "Kurtić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000001", null, null, "desktop" },
-                    { 2, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "manager@autoservis.ba", "Emir", true, null, "Begić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000002", null, null, "manager" },
+                    { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "desktop@autoservis.ba", "Almedin", true, null, "Kurtić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000001", null, null, "desktop" },
+                    { 2, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "manager@autoservis.ba", "Emir", true, null, "Begić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000002", null, null, "manager" },
                     { 3, 3, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "adnan.hadzic@autoservis.ba", "Adnan", true, null, "Hadžić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000003", null, null, "mechanic" },
-                    { 4, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mobile@autoservis.ba", "Mirza", true, null, "Delić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000004", null, null, "mobile" },
-                    { 5, 7, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "amir@autoservis.ba", "Amir", true, null, "Softić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000005", null, null, "amir" },
-                    { 6, 9, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "meho.mehic@autoservis.ba", "Meho", true, null, "Mehić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000006", null, null, "meho" }
+                    { 4, 4, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mirza.delic@autoservis.ba", "Mirza", true, null, "Delić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000004", null, null, "mirza" },
+                    { 5, 5, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mobile@autoservis.ba", "Amir", true, null, "Softić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000005", null, null, "mobile" },
+                    { 6, 6, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "meho.mehic@autoservis.ba", "Meho", true, null, "Mehić", "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2", "+38761000006", null, null, "meho" }
                 });
 
             migrationBuilder.InsertData(
@@ -806,6 +806,18 @@ namespace AutoServis.Services.Database.Migrations
                     { 3, 4 },
                     { 4, 5 },
                     { 4, 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Vehicles",
+                columns: new[] { "Id", "BrandId", "CreatedAt", "EngineDisplacementCc", "EnginePowerKw", "EngineType", "IsDeleted", "MileageKm", "Model", "ProductionYear", "UserId", "Vin" },
+                values: new object[,]
+                {
+                    { 1, 17, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1968, 110, 2, false, 187450, "Golf 7", 2016, 5, "WVWZZZAUZGW123456" },
+                    { 2, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1498, 110, 1, false, 92300, "A3 Sportback", 2019, 5, "WAUZZZ8V5KA654321" },
+                    { 3, 15, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1598, 85, 2, false, 134800, "Octavia", 2018, 6, "TMBJJ7NE8J0987654" },
+                    { 4, 2, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1995, 135, 2, false, 201500, "f30 320d", 2015, 6, "WBA3D3C50FK123789" },
+                    { 5, 16, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1490, 85, 3, false, 48700, "Yaris Hybrid", 2021, 6, "VNKKTUD320A123456" }
                 });
 
             migrationBuilder.CreateIndex(

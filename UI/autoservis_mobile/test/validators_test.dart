@@ -98,4 +98,60 @@ void main() {
       expect(validator('abc'), isNull);
     });
   });
+
+  group('Validators.vin', () {
+    final validator = Validators.vin();
+
+    test('accepts 17 letters and digits', () {
+      expect(validator('WVWZZZAUZGW123456'), isNull);
+      expect(validator('wvwzzzauzgw123456'), isNull);
+      expect(validator(' WVWZZZAUZGW123456 '), isNull);
+    });
+
+    test('rejects a wrong length and the letters I, O and Q', () {
+      expect(validator(''), isNotNull);
+      expect(validator('WVWZZZAUZGW12345'), isNotNull);
+      expect(validator('WVWZZZAUZGW1234567'), isNotNull);
+      expect(validator('WVWZZZAUZGW12345I'), isNotNull);
+      expect(validator('WVWZZZAUZGW12345O'), isNotNull);
+      expect(validator('WVWZZZAUZGW12345Q'), isNotNull);
+      expect(validator('WVWZZZAUZGW-23456'), isNotNull);
+    });
+  });
+
+  group('Validators.integerInRange', () {
+    final validator = Validators.integerInRange(
+      min: 1,
+      max: 2000,
+      requiredMessage: 'Obavezno.',
+      rangeMessage: 'Van opsega.',
+    );
+
+    test('requires a value', () {
+      expect(validator(null), 'Obavezno.');
+      expect(validator('  '), 'Obavezno.');
+    });
+
+    test('accepts the limits and rejects everything outside them', () {
+      expect(validator('1'), isNull);
+      expect(validator('2000'), isNull);
+      expect(validator('0'), 'Van opsega.');
+      expect(validator('2001'), 'Van opsega.');
+      expect(validator('12a'), 'Van opsega.');
+      expect(validator('1.5'), 'Van opsega.');
+    });
+  });
+
+  group('Validators.differentFrom', () {
+    test('rejects the same value as the other field', () {
+      var other = 'lozinka1';
+      final validator = Validators.differentFrom(() => other, 'Ista.');
+
+      expect(validator('lozinka1'), 'Ista.');
+      expect(validator('lozinka2'), isNull);
+
+      other = 'lozinka2';
+      expect(validator('lozinka2'), 'Ista.');
+    });
+  });
 }

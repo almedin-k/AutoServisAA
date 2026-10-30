@@ -54,4 +54,37 @@ void main() {
       expect(initialsOf('', ''), '?');
     });
   });
+
+  group('formatInteger', () {
+    test('uses a dot as the thousands separator', () {
+      expect(formatInteger(0), '0');
+      expect(formatInteger(950), '950');
+      expect(formatInteger(1968), '1.968');
+      expect(formatInteger(187450), '187.450');
+      expect(formatInteger(1234567), '1.234.567');
+      expect(formatInteger(-1500), '-1.500');
+    });
+  });
+
+  group('vehicle formats', () {
+    test('mileage and displacement carry their unit', () {
+      expect(formatMileage(187450), '187.450 km');
+      expect(formatMileage(0), '0 km');
+      expect(formatDisplacement(1968), '1.968 cm³');
+    });
+
+    test('vehicle count uses the Bosnian plural', () {
+      expect(formatVehicleCount(1), '1 vozilo');
+      expect(formatVehicleCount(2), '2 vozila');
+      expect(formatVehicleCount(5), '5 vozila');
+      expect(formatVehicleCount(21), '21 vozilo');
+    });
+  });
+
+  group('formatDate', () {
+    test('is day.month.year. with leading zeros', () {
+      expect(formatDate(DateTime(2026, 1, 5)), '05.01.2026.');
+      expect(formatDate(DateTime(2026, 10, 29)), '29.10.2026.');
+    });
+  });
 }

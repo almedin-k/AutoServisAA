@@ -6,7 +6,6 @@ import '../config/app_config.dart';
 import '../providers/auth_provider.dart';
 import 'api_client_exception.dart';
 
-/// Shared HTTP plumbing used by every provider
 class ApiClient {
   ApiClient._();
   static const Duration _timeout = Duration(seconds: 20);
@@ -46,7 +45,12 @@ class ApiClient {
       throw ApiClientException('Nije moguće povezati se sa serverom. Provjerite vezu i pokušajte ponovo.');
     }
   }
-
+  static Future<http.Response> sendMultipart(http.MultipartRequest Function() buildRequest) {
+    return send(() async {
+      final streamed = await buildRequest().send();
+      return http.Response.fromStream(streamed);
+    });
+  }
   static void ensureSuccess(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return;

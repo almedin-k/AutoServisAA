@@ -1,4 +1,4 @@
-// Small reusable form validators. Every validator returns null when the value is valid, otherwise a message
+// Small reusable form validators.
 typedef FieldValidator = String? Function(String?);
 
 class Validators {
@@ -8,11 +8,10 @@ class Validators {
   static final RegExp _passwordPattern = RegExp(r'^(?=.*[A-Za-z])(?=.*[0-9]).{8,100}$');
   static final RegExp _phonePattern = RegExp(r'^\+?[0-9 ()/-]{6,20}$');
   static final RegExp _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-
+  static final RegExp _vinPattern = RegExp(r'^[A-HJ-NPR-Za-hj-npr-z0-9]{17}$');
   static FieldValidator required([String message = requiredMessage]) {
     return (value) => (value == null || value.trim().isEmpty) ? message : null;
   }
-
   static FieldValidator maxLength(int max, [String? message]) {
     return (value) {
       if (value != null && value.trim().length > max) {
@@ -63,7 +62,6 @@ class Validators {
       return null;
     };
   }
-
   static FieldValidator sameAs(String? Function() other, String message) {
     return (value) => (value ?? '') == (other() ?? '') ? null : message;
   }
@@ -75,6 +73,42 @@ class Validators {
         return null;
       }
       return _phonePattern.hasMatch(text) ? null : 'Unesite ispravan broj telefona, na primjer +38761123456.';
+    };
+  }
+
+  static FieldValidator differentFrom(String? Function() other, String message) {
+    return (value) => (value ?? '') != (other() ?? '') ? null : message;
+  }
+
+  static FieldValidator vin() {
+    return (value) {
+      final text = (value ?? '').trim();
+      if (text.isEmpty) {
+        return 'Broj šasije je obavezan.';
+      }
+      if (!_vinPattern.hasMatch(text)) {
+        return 'Broj šasije mora imati tačno 17 znakova: slova i brojeve, bez slova I, O i Q.';
+      }
+      return null;
+    };
+  }
+
+  static FieldValidator integerInRange({
+    required int min,
+    required int max,
+    required String requiredMessage,
+    required String rangeMessage,
+  }) {
+    return (value) {
+      final text = (value ?? '').trim();
+      if (text.isEmpty) {
+        return requiredMessage;
+      }
+      final number = int.tryParse(text);
+      if (number == null || number < min || number > max) {
+        return rangeMessage;
+      }
+      return null;
     };
   }
 

@@ -19,7 +19,6 @@ public class AuthService : IAuthService
     private const string InvalidCredentialsMessage = "Pogrešno korisničko ime ili lozinka.";
     private const string SessionExpiredMessage = "Vaša sesija je istekla. Prijavite se ponovo.";
     private static readonly TimeSpan SessionCacheDuration = TimeSpan.FromSeconds(30);
-
     private readonly AutoServisDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ISecureTokenGenerator _tokenGenerator;
@@ -52,7 +51,6 @@ public class AuthService : IAuthService
         {
             throw new AuthenticationFailedException(InvalidCredentialsMessage);
         }
-
         var user = await _dbContext.Users
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
@@ -65,13 +63,10 @@ public class AuthService : IAuthService
 
         var now = DateTime.UtcNow;
         user.LastLoginAt = now;
-
         var (refreshToken, rawToken) = CreateRefreshToken(user.Id, now);
         _dbContext.RefreshTokens.Add(refreshToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-
         _logger.LogInformation("User {UserId} signed in (session {SessionId})", user.Id, refreshToken.Id);
-
         return BuildSession(user, refreshToken, rawToken);
     }
 
@@ -92,15 +87,11 @@ public class AuthService : IAuthService
         {
             throw new AuthenticationFailedException(SessionExpiredMessage);
         }
-
-        // Rotation: the old session is revoked and a new one is created in a single SaveChanges.
         existing.RevokedAt = now;
         var (newToken, rawToken) = CreateRefreshToken(existing.UserId, now);
         _dbContext.RefreshTokens.Add(newToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-
         _cache.Remove(SessionCacheKey(existing.Id));
-
         return BuildSession(existing.User, newToken, rawToken);
     }
 
@@ -108,15 +99,35 @@ public class AuthService : IAuthService
     {
         var session = await _dbContext.RefreshTokens
             .FirstOrDefaultAsync(t => t.Id == sessionId && t.RevokedAt == null, cancellationToken);
-
         if (session is not null)
         {
             session.RevokedAt = DateTime.UtcNow;
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
-
         _cache.Remove(SessionCacheKey(sessionId));
         _logger.LogInformation("Session {SessionId} was revoked", sessionId);
+    }
+
+    public async Task RevokeOtherSessionsAsync(
+        int userId, int? currentSessionId, CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+        var sessions = await _dbContext.RefreshTokens
+            .Where(t => t.UserId == userId
+                        && t.RevokedAt == null
+                        && (!currentSessionId.HasValue || t.Id != currentSessionId.Value))
+            .ToListAsync(cancellationToken);
+
+        foreach (var session in sessions)
+        {
+            session.RevokedAt = now;
+        }
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        foreach (var session in sessions)
+        {
+            _cache.Remove(SessionCacheKey(session.Id));
+        }
+        _logger.LogInformation("Revoked {Count} other session(s) of user {UserId}", sessions.Count, userId);
     }
 
     public async Task<bool> IsSessionActiveAsync(int sessionId, CancellationToken cancellationToken = default)
@@ -124,40 +135,32 @@ public class AuthService : IAuthService
         var isActive = await _cache.GetOrCreateAsync(SessionCacheKey(sessionId), async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = SessionCacheDuration;
-
             var now = DateTime.UtcNow;
             return await _dbContext.RefreshTokens.AnyAsync(
                 t => t.Id == sessionId && t.RevokedAt == null && t.ExpiresAt > now && t.User.IsActive,
                 cancellationToken);
         });
-
         return isActive;
     }
 
     public async Task<CurrentUserResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         await _registerValidator.ValidateAndThrowAsync(request, cancellationToken);
-
         var username = request.Username.Trim();
         var email = request.Email.Trim();
-
         if (await _dbContext.Users.AnyAsync(u => u.Username == username, cancellationToken))
         {
-            throw new BusinessException("Ovo korisničko ime je već zauzeto. Odaberite drugo.");
+            throw new BusinessException("Ovo korisničko ime je već u upotrebi!");
         }
-
         if (await _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken))
         {
             throw new BusinessException("Račun s ovom e-mail adresom već postoji.");
         }
-
         if (request.CityId.HasValue && !await _dbContext.Cities.AnyAsync(c => c.Id == request.CityId.Value, cancellationToken))
         {
             throw new BusinessException("Odabrani grad ne postoji.");
         }
-
         var clientRole = await _dbContext.Roles.FirstAsync(r => r.Name == Roles.Client, cancellationToken);
-
         var user = new User
         {
             FirstName = request.FirstName.Trim(),
@@ -171,12 +174,9 @@ public class AuthService : IAuthService
             CreatedAt = DateTime.UtcNow,
             UserRoles = new List<UserRole> { new() { RoleId = clientRole.Id } }
         };
-
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync(cancellationToken);
-
         _logger.LogInformation("New client registered with id {UserId}", user.Id);
-
         return new CurrentUserResponse
         {
             Id = user.Id,
@@ -198,7 +198,6 @@ public class AuthService : IAuthService
             CreatedAt = now,
             ExpiresAt = now.AddDays(_sessionSettings.RefreshTokenDays)
         };
-
         return (entity, rawToken);
     }
 
@@ -223,6 +222,5 @@ public class AuthService : IAuthService
             }
         };
     }
-
     private static string SessionCacheKey(int sessionId) => $"session:{sessionId}";
 }

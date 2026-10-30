@@ -6,20 +6,20 @@ import 'config/app_config.dart';
 import 'providers/auth_provider.dart';
 import 'providers/catalog_provider.dart';
 import 'providers/city_provider.dart';
+import 'providers/profile_provider.dart';
 import 'providers/service_category_provider.dart';
 import 'providers/service_provider.dart';
+import 'providers/vehicle_brand_provider.dart';
+import 'providers/vehicle_provider.dart';
 import 'screens/login_screen.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  //  UI is designed for portrait mode
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -27,12 +27,10 @@ Future<void> main() async {
     systemNavigationBarColor: AppColors.nav,
     systemNavigationBarIconBrightness: Brightness.light,
   ));
-
   if (!AppConfig.isConfigured) {
     runApp(const _MissingConfigApp());
     return;
   }
-
   runApp(
     MultiProvider(
       providers: [
@@ -40,6 +38,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ServiceProvider()),
         ChangeNotifierProvider(create: (_) => ServiceCategoryProvider()),
         ChangeNotifierProvider(create: (_) => CityProvider()),
+        ChangeNotifierProvider(create: (_) => VehicleProvider()),
+        ChangeNotifierProvider(create: (_) => VehicleBrandProvider()),
+        ChangeNotifierProvider(create: (context) => ProfileProvider(context.read<AuthProvider>())),
         ChangeNotifierProvider(
           create: (context) => CatalogProvider(
             context.read<ServiceProvider>(),
@@ -52,9 +53,7 @@ Future<void> main() async {
   );
 }
 
-// The user interface is always in Bosnian, whatever the language of the phone is.
 const Locale _appLocale = Locale('bs');
-
 const List<LocalizationsDelegate<dynamic>> _localizationsDelegates = [
   GlobalMaterialLocalizations.delegate,
   GlobalWidgetsLocalizations.delegate,
@@ -83,10 +82,12 @@ class _AutoServisAppState extends State<AutoServisApp> {
     super.dispose();
   }
 
-  // Signing out (or an expired session) always redirects to login screen.
   void _onAuthChanged() {
     final isAuthenticated = _auth.isAuthenticated;
+
     if (_wasAuthenticated && !isAuthenticated) {
+      context.read<VehicleProvider>().clear();
+      context.read<ProfileProvider>().clear();
       _navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute<void>(builder: (_) => const LoginScreen()),
         (route) => false,
@@ -108,8 +109,6 @@ class _AutoServisAppState extends State<AutoServisApp> {
     );
   }
 }
-
-// Shown when the app was started without defining api base url.
 class _MissingConfigApp extends StatelessWidget {
   const _MissingConfigApp();
   @override

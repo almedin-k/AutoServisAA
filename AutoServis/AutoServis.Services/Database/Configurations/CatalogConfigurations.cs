@@ -12,7 +12,6 @@ public class VehicleBrandConfiguration : IEntityTypeConfiguration<VehicleBrand>
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Name).IsRequired().HasMaxLength(50);
         builder.HasIndex(b => b.Name).IsUnique();
-
         builder.HasData(SeedData.VehicleBrands);
     }
 }
@@ -24,8 +23,7 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
         builder.HasKey(v => v.Id);
         builder.Property(v => v.Model).IsRequired().HasMaxLength(50);
         builder.Property(v => v.Vin).IsRequired().HasMaxLength(17);
-
-        // A VIN must be unique among vehicles that have not been logically deleted.
+        // VIN must be unique among vehicles
         builder.HasIndex(v => v.Vin).IsUnique().HasFilter("[IsDeleted] = 0");
 
         builder.HasOne(v => v.User)
@@ -37,6 +35,8 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
             .WithMany()
             .HasForeignKey(v => v.BrandId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasData(SeedData.Vehicles);
     }
 }
 
@@ -48,7 +48,6 @@ public class ServiceCategoryConfiguration : IEntityTypeConfiguration<ServiceCate
         builder.Property(c => c.Name).IsRequired().HasMaxLength(100);
         builder.Property(c => c.Description).HasMaxLength(500);
         builder.HasIndex(c => c.Name).IsUnique();
-
         builder.HasData(SeedData.ServiceCategories);
     }
 }
@@ -61,9 +60,7 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.Property(s => s.Name).IsRequired().HasMaxLength(100);
         builder.Property(s => s.Description).IsRequired().HasMaxLength(1000);
         builder.Property(s => s.Price).HasPrecision(18, 2);
-
         builder.HasIndex(s => new { s.CategoryId, s.Name }).IsUnique();
-
         builder.HasOne(s => s.Category)
             .WithMany()
             .HasForeignKey(s => s.CategoryId)
@@ -80,7 +77,6 @@ public class ServiceImageConfiguration : IEntityTypeConfiguration<ServiceImage>
         builder.HasKey(i => i.ServiceId);
         builder.Property(i => i.Data).IsRequired();
         builder.Property(i => i.ContentType).IsRequired().HasMaxLength(100);
-
         builder.HasOne(i => i.Service)
             .WithOne(s => s.Image)
             .HasForeignKey<ServiceImage>(i => i.ServiceId)
@@ -96,9 +92,8 @@ public class PartConfiguration : IEntityTypeConfiguration<Part>
         builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
         builder.Property(p => p.Sku).HasMaxLength(50);
         builder.Property(p => p.UnitPrice).HasPrecision(18, 2);
-
+        // The SKU is optional, but when it is present it must be unique.
         builder.HasIndex(p => p.Sku).IsUnique().HasFilter("[Sku] IS NOT NULL");
-
         builder.HasData(SeedData.Parts);
     }
 }
@@ -108,7 +103,6 @@ public class ServicePartConfiguration : IEntityTypeConfiguration<ServicePart>
     public void Configure(EntityTypeBuilder<ServicePart> builder)
     {
         builder.HasKey(sp => new { sp.ServiceId, sp.PartId });
-
         builder.ToTable(t => t.HasCheckConstraint("CK_ServiceParts_Quantity", "[Quantity] > 0"));
 
         builder.HasOne(sp => sp.Service)
@@ -131,7 +125,6 @@ public class HoistConfiguration : IEntityTypeConfiguration<Hoist>
     {
         builder.HasKey(h => h.Id);
         builder.Property(h => h.Name).IsRequired().HasMaxLength(50);
-
         builder.HasData(SeedData.Hoists);
     }
 }

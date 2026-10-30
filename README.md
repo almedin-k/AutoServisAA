@@ -16,7 +16,6 @@ UI/                    Flutter applications
   autoservis_mobile/           Android application for vehicle owners (clients)
 ```
 
-
 ## Running the backend
 
 1. Copy `AutoServis/.env.example` to `AutoServis/.env` (the values work as they are).
@@ -55,19 +54,15 @@ dart run build_runner build --delete-conflicting-outputs
 flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5126
 ```
 
-`10.0.2.2` is the address under which the Android emulator reaches the computer it runs on.
-On a physical phone use the IP address of the computer in the local network, for example
-`--dart-define=API_BASE_URL=http://192.168.1.20:5126`. In that case run the API with Docker
-(`docker compose up --build`), because the API started with `dotnet run` listens on localhost only.
-
-The API address is never hardcoded in either application: it comes from `--dart-define=API_BASE_URL`.
+The API address is not hardcoded: it comes from `--dart-define=API_BASE_URL`.
 
 ## Test accounts (password for every account: `test`)
 
 | Context            | Username  | Password | Role     |
 |--------------------|-----------|----------|----------|
 | Desktop application| desktop   | test     | Admin    |
-| Mobile application | mobile    | test     | Client   |
+| Mobile application | mobile    | test     | Client (2 vehicles in the garage) |
+| Mobile application | meho      | test     | Client (3 vehicles in the garage) |
 | Role: Manager      | manager   | test     | Manager  |
 | Role: Mechanic     | mechanic  | test     | Mechanic |
 

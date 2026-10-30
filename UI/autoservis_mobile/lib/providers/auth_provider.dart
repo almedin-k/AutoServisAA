@@ -5,11 +5,11 @@ import '../models/current_user.dart';
 import '../utils/api_client.dart';
 import '../utils/api_client_exception.dart';
 
-// Holds the signed-in user and the tokens.
 class AuthProvider extends ChangeNotifier {
   AuthProvider() {
     _instance = this;
   }
+
   static AuthProvider? _instance;
   static String? _accessToken;
   static String? _refreshToken;
@@ -20,8 +20,6 @@ class AuthProvider extends ChangeNotifier {
   static bool get hasSession => _accessToken != null && _refreshToken != null;
   CurrentUser? get user => _user;
   bool get isAuthenticated => _user != null;
-
-  // True once after the session ended because the refresh token was no longer valid.
   bool consumeSessionExpired() {
     final expired = _sessionExpired;
     _sessionExpired = false;
@@ -38,14 +36,12 @@ class AuthProvider extends ChangeNotifier {
       authorized: false,
     );
     ApiClient.ensureSuccess(response);
-
     final data = ApiClient.decodeBody(response) as Map<String, dynamic>;
     final user = CurrentUser.fromJson(data['user'] as Map<String, dynamic>);
     _accessToken = data['accessToken'] as String;
     _refreshToken = data['refreshToken'] as String;
 
     if (!user.isClient) {
-      // The credentials are correct, but the workshop team must use the desktop application.
       await _revokeSessionOnServer();
       _clear();
       throw ApiClientException(
@@ -57,7 +53,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Creates a client account. The account is not signed in, the user logs in afterwards.
   Future<void> register({
     required String firstName,
     required String lastName,
@@ -88,25 +83,36 @@ class AuthProvider extends ChangeNotifier {
     ApiClient.ensureSuccess(response);
   }
 
+  void applyProfile({required String firstName, required String lastName, required String email}) {
+    final current = _user;
+    if (current == null) {
+      return;
+    }
+    _user = CurrentUser(
+      id: current.id,
+      firstName: firstName,
+      lastName: lastName,
+      username: current.username,
+      email: email,
+      roles: current.roles,
+    );
+    notifyListeners();
+  }
+
   Future<void> logout() async {
     await _revokeSessionOnServer();
     _clear();
     _sessionExpired = false;
     notifyListeners();
   }
-
-  // Gets a new access token with the refresh token. Parallel callers share one refresh request.
-  // Returns false when the session cannot be continued.
   static Future<bool> refreshSession() {
     return _refreshing ??= _doRefresh().whenComplete(() => _refreshing = null);
   }
-
   static Future<bool> _doRefresh() async {
     final refreshToken = _refreshToken;
     if (refreshToken == null) {
       return false;
     }
-
     try {
       final response = await http
           .post(
@@ -140,13 +146,11 @@ class AuthProvider extends ChangeNotifier {
     } catch (_) {
     }
   }
-
   void _expire() {
     _clear();
     _sessionExpired = true;
     notifyListeners();
   }
-
   void _clear() {
     _accessToken = null;
     _refreshToken = null;

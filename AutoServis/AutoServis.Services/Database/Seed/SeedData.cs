@@ -4,11 +4,11 @@ using AutoServis.Services.Database.Entities;
 
 namespace AutoServis.Services.Database.Seed;
 
-// Deterministic seed data. All demo accounts use the password "test". The hash is BCrypt.
+// Deterministic seed data. All demo accounts use the password "test".
+// The hash is BCrypt.
 public static class SeedData
 {
     private const string TestPasswordHash = "$2b$11$B5jMwgEiYbVg3qWo2Syqg.3q9pYTZ.0yAdzfYLFrOLPJE9IPuVJ/2";
-
     private static readonly DateTime SeedDate = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     public const int AdminRoleId = 1;
@@ -42,12 +42,12 @@ public static class SeedData
 
     public static readonly User[] Users =
     {
-        CreateUser(1, "Almedin", "Kurtić", "desktop", "desktop@autoservis.ba", "+38761000001", cityId: 2),
-        CreateUser(2, "Emir", "Begić", "manager", "manager@autoservis.ba", "+38761000002", cityId: 1),
+        CreateUser(1, "Almedin", "Kurtić", "desktop", "desktop@autoservis.ba", "+38761000001", cityId: 1),
+        CreateUser(2, "Emir", "Begić", "manager", "manager@autoservis.ba", "+38761000002", cityId: 2),
         CreateUser(3, "Adnan", "Hadžić", "mechanic", "adnan.hadzic@autoservis.ba", "+38761000003", cityId: 3),
-        CreateUser(4, "Mirza", "Delić", "mobile", "mobile@autoservis.ba", "+38761000004", cityId: 5),
-        CreateUser(5, "Amir", "Softić", "amir", "amir@autoservis.ba", "+38761000005", cityId: 7),
-        CreateUser(6, "Meho", "Mehić", "meho", "meho.mehic@autoservis.ba", "+38761000006", cityId: 9)
+        CreateUser(4, "Mirza", "Delić", "mirza", "mirza.delic@autoservis.ba", "+38761000004", cityId: 4),
+        CreateUser(5, "Amir", "Softić", "mobile", "mobile@autoservis.ba", "+38761000005", cityId: 5),
+        CreateUser(6, "Meho", "Mehić", "meho", "meho.mehic@autoservis.ba", "+38761000006", cityId: 6)
     };
 
     public static readonly UserRole[] UserRoles =
@@ -63,6 +63,14 @@ public static class SeedData
     public static readonly VehicleBrand[] VehicleBrands = CreateBrands(
         "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", "Kia",
         "Mercedes-Benz", "Opel", "Peugeot", "Renault", "Seat", "Škoda", "Toyota", "Volkswagen", "Volvo");
+    public static readonly Vehicle[] Vehicles =
+    {
+        CreateVehicle(1, 5, 17, "Golf 7", 2016, EngineType.Diesel, 1968, 110, "WVWZZZAUZGW123456", 187450),
+        CreateVehicle(2, 5, 1, "A3 Sportback", 2019, EngineType.Petrol, 1498, 110, "WAUZZZ8V5KA654321", 92300),
+        CreateVehicle(3, 6, 15, "Octavia", 2018, EngineType.Diesel, 1598, 85, "TMBJJ7NE8J0987654", 134800),
+        CreateVehicle(4, 6, 2, "f30 320d", 2015, EngineType.Diesel, 1995, 135, "WBA3D3C50FK123789", 201500),
+        CreateVehicle(5, 6, 16, "Yaris Hybrid", 2021, EngineType.Hybrid, 1490, 85, "VNKKTUD320A123456", 48700)
+    };
 
     public static readonly ServiceCategory[] ServiceCategories =
     {
@@ -83,7 +91,7 @@ public static class SeedData
 
     public static readonly Part[] Parts =
     {
-        new() { Id = 1, Name = "Motorno ulje 5W-30 (5 L)", Sku = "OIL-5W30-5L", UnitPrice = 108.00m, IsActive = true },
+        new() { Id = 1, Name = "Motorno ulje 5W-30 (5 L)", Sku = "OIL-5W30-5L", UnitPrice = 55.00m, IsActive = true },
         new() { Id = 2, Name = "Filter ulja", Sku = "FLT-OIL-STD", UnitPrice = 12.00m, IsActive = true },
         new() { Id = 3, Name = "Filter zraka", Sku = "FLT-AIR-STD", UnitPrice = 18.00m, IsActive = true },
         new() { Id = 4, Name = "Polenski (kabinski) filter", Sku = "FLT-CAB-STD", UnitPrice = 15.00m, IsActive = true },
@@ -94,12 +102,10 @@ public static class SeedData
         new() { Id = 9, Name = "Kočiona tečnost DOT 4 (1 L)", Sku = "BRK-FLD-1L", UnitPrice = 14.00m, IsActive = true },
         new() { Id = 10, Name = "Klima plin R134a (500 g)", Sku = "AC-R134A-500", UnitPrice = 35.00m, IsActive = true },
         new() { Id = 11, Name = "Svjećica", Sku = "IGN-SPK-STD", UnitPrice = 12.00m, IsActive = true },
-        new() { Id = 12, Name = "Set zupčastog remena", Sku = "TMG-KIT-STD", UnitPrice = 270.00m, IsActive = true },
-        new() { Id = 13, Name = "Rashladna tečnost (5 L)", Sku = "CLT-5L", UnitPrice = 35.00m, IsActive = true },
-        new() { Id = 14, Name = "Grijač", Sku = "IGN-GLW-STD", UnitPrice = 22.00m, IsActive = true }
+        new() { Id = 12, Name = "Set zupčastog remena", Sku = "TMG-KIT-STD", UnitPrice = 220.00m, IsActive = true },
+        new() { Id = 13, Name = "Rashladna tečnost (5 L)", Sku = "CLT-5L", UnitPrice = 25.00m, IsActive = true },
+        new() { Id = 14, Name = "Žarna svjećica", Sku = "IGN-GLW-STD", UnitPrice = 22.00m, IsActive = true }
     };
-
-    // The service price covers labour. Parts are charged separately, based on what is actually used.
     public static readonly Service[] Services =
     {
         CreateService(1, 1, "Mali servis", "Zamjena motornog ulja i filtera ulja uz osnovnu vizuelnu kontrolu vozila.", 140.00m, 60, 3),
@@ -165,6 +171,27 @@ public static class SeedData
             CityId = cityId,
             PasswordHash = TestPasswordHash,
             IsActive = true,
+            CreatedAt = SeedDate
+        };
+    }
+
+    private static Vehicle CreateVehicle(
+        int id, int userId, int brandId, string model, int productionYear, EngineType engineType,
+        int displacementCc, int powerKw, string vin, int mileageKm)
+    {
+        return new Vehicle
+        {
+            Id = id,
+            UserId = userId,
+            BrandId = brandId,
+            Model = model,
+            ProductionYear = productionYear,
+            EngineType = engineType,
+            EngineDisplacementCc = displacementCc,
+            EnginePowerKw = powerKw,
+            Vin = vin,
+            MileageKm = mileageKm,
+            IsDeleted = false,
             CreatedAt = SeedDate
         };
     }

@@ -9,6 +9,7 @@ public interface IAuthService
     Task<AuthSession> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
     Task<AuthSession> RefreshAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task LogoutAsync(int sessionId, CancellationToken cancellationToken = default);
+    Task RevokeOtherSessionsAsync(int userId, int? currentSessionId, CancellationToken cancellationToken = default);
     Task<bool> IsSessionActiveAsync(int sessionId, CancellationToken cancellationToken = default);
     Task<CurrentUserResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
 }
